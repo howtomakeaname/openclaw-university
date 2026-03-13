@@ -35,9 +35,56 @@
     <section class="section">
       <h2 class="section-title">加载器</h2>
       <div class="loader-row">
-        <Loader size="sm" />
-        <Loader size="md" />
-        <Loader size="lg" />
+        <Loader />
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">输入框</h2>
+      <div class="input-stack">
+        <Input
+          v-model="form.name"
+          label="用户名"
+          placeholder="请输入用户名"
+          hint="4-20个字符"
+        />
+        <Input
+          v-model="form.email"
+          label="邮箱"
+          type="email"
+          placeholder="请输入邮箱地址"
+          error="邮箱格式不正确"
+        />
+        <Input
+          label="密码"
+          type="password"
+          placeholder="请输入密码"
+          disabled
+        />
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">搜索框</h2>
+      <Search v-model="searchValue" @search="onSearch" />
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">选择框</h2>
+      <div class="input-stack">
+        <Select
+          v-model="form.country"
+          label="国家"
+          :options="countryOptions"
+          placeholder="选择国家"
+        />
+        <Select
+          v-model="form.city"
+          label="城市"
+          :options="cityOptions"
+          placeholder="选择城市"
+          hint="请先选择国家"
+        />
       </div>
     </section>
 
@@ -93,12 +140,43 @@
 </template>
 
 <script setup lang="ts">
+import { reactive, ref } from 'vue'
 import Button from './components/ui/Button.vue'
 import Icon from './components/ui/Icon.vue'
 import Loader from './components/ui/Loader.vue'
+import Input from './components/ui/Input.vue'
+import Search from './components/ui/Search.vue'
+import Select from './components/ui/Select.vue'
 import ListItem from './components/ui/ListItem.vue'
 import ListGroup from './components/ui/ListGroup.vue'
 import HorizontalScrollList from './components/ui/HorizontalScrollList.vue'
+
+const form = reactive({
+  name: '',
+  email: 'invalid-email',
+  country: '',
+  city: ''
+})
+
+const searchValue = ref('')
+
+const countryOptions = [
+  { label: '中国', value: 'cn' },
+  { label: '美国', value: 'us' },
+  { label: '日本', value: 'jp' },
+  { label: '德国', value: 'de' }
+]
+
+const cityOptions = [
+  { label: '北京', value: 'beijing' },
+  { label: '上海', value: 'shanghai' },
+  { label: '广州', value: 'guangzhou' },
+  { label: '深圳', value: 'shenzhen' }
+]
+
+const onSearch = (val: string) => {
+  console.log('搜索:', val)
+}
 </script>
 
 <style scoped>
@@ -152,6 +230,13 @@ import HorizontalScrollList from './components/ui/HorizontalScrollList.vue'
 .loader-row {
   display: flex;
   align-items: center;
+  gap: var(--gap-4);
+  padding: var(--gap-3);
+}
+
+.input-stack {
+  display: flex;
+  flex-direction: column;
   gap: var(--gap-4);
 }
 

@@ -1,44 +1,13 @@
 <template>
-  <span class="loader" :style="{ width: sizeMap[size], height: sizeMap[size] }">
-    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-      <circle
-        cx="12"
-        cy="12"
-        r="10"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-dasharray="31.4 31.4"
-        transform="rotate(-90 12 12)"
-      >
-        <animateTransform
-          attributeName="transform"
-          type="rotate"
-          from="0 12 12"
-          to="360 12 12"
-          dur="1s"
-          repeatCount="indefinite"
-        />
-      </circle>
-    </svg>
+  <span class="loader">
+    <span class="dot"></span>
+    <span class="dot"></span>
+    <span class="dot"></span>
   </span>
 </template>
 
 <script setup lang="ts">
-interface Props {
-  size?: 'sm' | 'md' | 'lg'
-}
-
-withDefaults(defineProps<Props>(), {
-  size: 'md'
-})
-
-const sizeMap = {
-  sm: 16,
-  md: 20,
-  lg: 24
-}
+// iOS 18风格加载器 - 三个圆点依次跳动
 </script>
 
 <style scoped>
@@ -46,12 +15,38 @@ const sizeMap = {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: var(--text-subtle);
-  opacity: 0.7;
+  gap: 4px;
+  height: 20px;
 }
 
-.loader svg {
-  width: 100%;
-  height: 100%;
+.dot {
+  width: 8px;
+  height: 8px;
+  background: var(--text-subtle);
+  border-radius: 50%;
+  animation: bounce 1.4s infinite ease-in-out both;
+}
+
+.dot:nth-child(1) {
+  animation-delay: -0.32s;
+}
+
+.dot:nth-child(2) {
+  animation-delay: -0.16s;
+}
+
+.dot:nth-child(3) {
+  animation-delay: 0s;
+}
+
+@keyframes bounce {
+  0%, 80%, 100% {
+    transform: scale(0.6);
+    opacity: 0.4;
+  }
+  40% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 </style>
