@@ -1,21 +1,18 @@
 <template>
-  <div
-    :class="['list-item', { 'is-clickable': clickable }]"
-    @click="handleClick"
-  >
-    <div v-if="$slots.before" class="list-before">
-      <slot name="before" />
+  <div :class="['list-item', { 'is-clickable': clickable }]" @click="handleClick">
+    <div v-if="$slots.lead" class="item-lead">
+      <slot name="lead" />
     </div>
-    <div class="list-content">
-      <div v-if="$slots.title" class="list-title">
+    <div class="item-body">
+      <div v-if="$slots.title" class="item-title">
         <slot name="title" />
       </div>
-      <div v-if="$slots.text" class="list-text">
-        <slot name="text" />
+      <div v-if="$slots.desc" class="item-desc">
+        <slot name="desc" />
       </div>
     </div>
-    <div v-if="$slots.after" class="list-after">
-      <slot name="after" />
+    <div v-if="$slots.trail" class="item-trail">
+      <slot name="trail" />
     </div>
   </div>
 </template>
@@ -43,50 +40,49 @@ const handleClick = (e: MouseEvent) => {
 <style scoped>
 .list-item {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: var(--gap-3);
   padding: var(--gap-3) 0;
-  min-height: 48px;
+  min-height: 52px;
 }
 
 .list-item.is-clickable {
   cursor: pointer;
-  border-radius: var(--corner-md);
-  padding: var(--gap-3);
   margin: 0 calc(-1 * var(--gap-3));
-  transition: background var(--ease-quick);
+  padding: var(--gap-3);
+  border-radius: var(--corner-md);
+  transition: all var(--ease-quick);
 }
 
 .list-item.is-clickable:hover {
-  background: var(--bg-hover);
+  background: var(--cinnabar-ghost);
 }
 
-.list-before,
-.list-after {
+.item-lead,
+.item-trail {
   display: flex;
   align-items: center;
   flex-shrink: 0;
-  color: var(--text-subtle);
+  color: var(--ink-tertiary);
 }
 
-.list-content {
+.item-body {
   flex: 1;
   min-width: 0;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   gap: 2px;
 }
 
-.list-title {
+.item-title {
   font-size: var(--font-base);
-  color: var(--text-main);
+  color: var(--ink-primary);
   line-height: 1.4;
 }
 
-.list-text {
+.item-desc {
   font-size: var(--font-sm);
-  color: var(--text-subtle);
+  color: var(--ink-tertiary);
   line-height: 1.4;
 }
 </style>

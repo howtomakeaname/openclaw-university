@@ -1,7 +1,7 @@
 <template>
-  <div class="select-wrap">
-    <label v-if="label" class="select-label">{{ label }}</label>
-    <div class="select-box" :class="{ 'is-open': isOpen, 'has-error': error }">
+  <div class="field">
+    <label v-if="label" class="field-label">{{ label }}</label>
+    <div class="select" :class="{ 'is-open': isOpen, 'has-error': error }">
       <button
         class="select-trigger"
         type="button"
@@ -28,7 +28,7 @@
         </div>
       </div>
     </div>
-    <p v-if="hint || error" class="select-hint" :class="{ 'is-error': error }">
+    <p v-if="hint || error" class="field-hint" :class="{ 'is-error': error }">
       {{ error || hint }}
     </p>
   </div>
@@ -81,7 +81,7 @@ const select = (option: Option) => {
 
 const closeOnClickOutside = (e: MouseEvent) => {
   const target = e.target as HTMLElement
-  if (!target.closest('.select-box')) {
+  if (!target.closest('.select')) {
     isOpen.value = false
   }
 }
@@ -96,20 +96,20 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-.select-wrap {
+.field {
   display: flex;
   flex-direction: column;
   gap: var(--gap-2);
   position: relative;
 }
 
-.select-label {
+.field-label {
   font-size: var(--font-sm);
   font-weight: 500;
-  color: var(--text-main);
+  color: var(--ink-primary);
 }
 
-.select-box {
+.select {
   position: relative;
 }
 
@@ -121,9 +121,9 @@ onUnmounted(() => {
   height: 40px;
   padding: 0 var(--gap-3);
   font-size: var(--font-base);
-  color: var(--text-main);
-  background: var(--bg-card);
-  border: 1px solid var(--line-default);
+  color: var(--ink-primary);
+  background: var(--paper-card);
+  border: 1px solid var(--border-default);
   border-radius: var(--corner-md);
   cursor: pointer;
   transition: all var(--ease-quick);
@@ -131,16 +131,16 @@ onUnmounted(() => {
 }
 
 .select-trigger:hover:not(:disabled) {
-  border-color: var(--text-faint);
+  border-color: var(--cinnabar-light);
 }
 
-.select-box.is-open .select-trigger {
-  border-color: var(--text-main);
+.select.is-open .select-trigger {
+  border-color: var(--cinnabar);
 }
 
 .select-trigger:disabled {
-  background: var(--bg-hover);
-  color: var(--text-faint);
+  background: var(--paper-hover);
+  color: var(--ink-muted);
   cursor: not-allowed;
 }
 
@@ -153,11 +153,11 @@ onUnmounted(() => {
 }
 
 .select-value.is-placeholder {
-  color: var(--text-faint);
+  color: var(--ink-muted);
 }
 
 .select-arrow {
-  color: var(--text-subtle);
+  color: var(--ink-tertiary);
   transition: transform var(--ease-quick);
 }
 
@@ -170,8 +170,8 @@ onUnmounted(() => {
   top: calc(100% + 4px);
   left: 0;
   right: 0;
-  background: var(--bg-card);
-  border: 1px solid var(--line-default);
+  background: var(--paper-card);
+  border: 1px solid var(--border-default);
   border-radius: var(--corner-md);
   max-height: 240px;
   overflow-y: auto;
@@ -193,31 +193,33 @@ onUnmounted(() => {
 .select-option {
   padding: var(--gap-3);
   font-size: var(--font-base);
-  color: var(--text-main);
+  color: var(--ink-primary);
   cursor: pointer;
-  transition: background var(--ease-quick);
+  transition: all var(--ease-quick);
 }
 
 .select-option:hover {
-  background: var(--bg-hover);
+  background: var(--cinnabar-ghost);
+  color: var(--cinnabar);
 }
 
 .select-option.is-selected {
-  background: var(--bg-hover);
+  background: var(--cinnabar-pale);
+  color: var(--cinnabar);
   font-weight: 500;
 }
 
-.select-hint {
+.field-hint {
   font-size: var(--font-xs);
-  color: var(--text-subtle);
+  color: var(--ink-tertiary);
   margin: 0;
 }
 
-.select-hint.is-error {
-  color: var(--error-text);
+.field-hint.is-error {
+  color: var(--error);
 }
 
-.select-box.has-error .select-trigger {
-  border-color: var(--error-text);
+.select.has-error .select-trigger {
+  border-color: var(--error);
 }
 </style>

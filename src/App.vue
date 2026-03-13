@@ -2,31 +2,31 @@
   <div class="app">
     <header class="header">
       <h1>UI 组件库</h1>
-      <p class="desc">简洁的界面组件系统</p>
+      <p class="desc">典雅中国风轻红色设计系统</p>
     </header>
 
     <section class="section">
       <h2 class="section-title">按钮</h2>
       <div class="button-row">
         <Button kind="fill">Fill</Button>
+        <Button kind="primary">Primary</Button>
         <Button kind="quiet">Quiet</Button>
         <Button kind="outline">Outline</Button>
         <Button kind="ghost">Ghost</Button>
-        <Button kind="danger">Danger</Button>
-        <Button kind="fill" disabled>Disabled</Button>
+        <Button kind="primary" disabled>Disabled</Button>
       </div>
     </section>
 
     <section class="section">
       <h2 class="section-title">图标</h2>
       <div class="icon-row">
-        <Icon size="sm">
+        <Icon size="sm" color="var(--cinnabar)">
           <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
         </Icon>
-        <Icon size="md">
+        <Icon size="md" color="var(--cinnabar)">
           <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
         </Icon>
-        <Icon size="lg">
+        <Icon size="lg" color="var(--cinnabar)">
           <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
         </Icon>
       </div>
@@ -92,32 +92,34 @@
       <h2 class="section-title">列表</h2>
       <ListGroup>
         <ListItem clickable>
-          <template #before>
-            <Icon size="md"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></Icon>
+          <template #lead>
+            <div class="avatar avatar-icon">
+              <Icon size="md" color="#fff"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></Icon>
+            </div>
           </template>
           <template #title>列表项标题</template>
-          <template #after>
-            <Icon size="sm"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></Icon>
+          <template #trail>
+            <Icon size="sm" color="var(--cinnabar)"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></Icon>
           </template>
         </ListItem>
         <ListItem clickable>
-          <template #before>
-            <div class="avatar">A</div>
+          <template #lead>
+            <div class="avatar avatar-text">A</div>
           </template>
           <template #title>带描述的列表项</template>
-          <template #text>这是辅助说明文字</template>
-          <template #after>
+          <template #desc>这是辅助说明文字</template>
+          <template #trail>
             <span class="badge">2</span>
           </template>
         </ListItem>
-        <ListItem>
-          <template #before>
-            <div class="avatar img">
+        <ListItem clickable>
+          <template #lead>
+            <div class="avatar avatar-img">
               <img src="https://picsum.photos/id/64/40/40" alt="">
             </div>
           </template>
           <template #title>图片前缀</template>
-          <template #text>使用图片作为前缀</template>
+          <template #desc>使用图片作为前缀</template>
         </ListItem>
       </ListGroup>
     </section>
@@ -188,17 +190,18 @@ const onSearch = (val: string) => {
 
 .header {
   margin-bottom: var(--gap-6);
+  text-align: center;
 }
 
 .header h1 {
   font-size: var(--font-xl);
   font-weight: 600;
-  color: var(--text-main);
+  color: var(--cinnabar);
   margin-bottom: var(--gap-1);
 }
 
 .desc {
-  color: var(--text-subtle);
+  color: var(--ink-tertiary);
   font-size: var(--font-sm);
 }
 
@@ -207,11 +210,11 @@ const onSearch = (val: string) => {
 }
 
 .section-title {
-  font-size: var(--font-sm);
+  font-size: var(--font-xs);
   font-weight: 600;
-  color: var(--text-subtle);
+  color: var(--ink-tertiary);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.08em;
   margin-bottom: var(--gap-3);
 }
 
@@ -230,6 +233,7 @@ const onSearch = (val: string) => {
 .loader-row {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: var(--gap-4);
   padding: var(--gap-3);
 }
@@ -241,24 +245,32 @@ const onSearch = (val: string) => {
 }
 
 .avatar {
-  width: 36px;
-  height: 36px;
-  border-radius: var(--corner-full);
-  background: var(--bg-hover);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: var(--font-sm);
-  font-weight: 500;
-  color: var(--text-main);
+  flex-shrink: 0;
 }
 
-.avatar.img {
+.avatar-icon {
+  background: var(--cinnabar);
+}
+
+.avatar-text {
+  background: var(--cinnabar-pale);
+  font-size: var(--font-sm);
+  font-weight: 500;
+  color: var(--cinnabar);
+}
+
+.avatar-img {
   overflow: hidden;
   padding: 0;
 }
 
-.avatar.img img {
+.avatar-img img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -269,19 +281,19 @@ const onSearch = (val: string) => {
   height: 20px;
   padding: 0 6px;
   border-radius: var(--corner-full);
-  background: var(--bg-hover);
+  background: var(--cinnabar-pale);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: var(--font-xs);
   font-weight: 500;
-  color: var(--text-subtle);
+  color: var(--cinnabar);
 }
 
 .card {
-  background: var(--bg-card);
+  background: var(--paper-card);
   border-radius: var(--corner-md);
-  border: 1px solid var(--line-default);
+  border: 1px solid var(--border-default);
   overflow: hidden;
 }
 
@@ -303,12 +315,12 @@ const onSearch = (val: string) => {
 .card-title {
   font-size: var(--font-sm);
   font-weight: 500;
-  color: var(--text-main);
+  color: var(--ink-primary);
   margin-bottom: 2px;
 }
 
 .card-desc {
   font-size: var(--font-xs);
-  color: var(--text-subtle);
+  color: var(--ink-tertiary);
 }
 </style>

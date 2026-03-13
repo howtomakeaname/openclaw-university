@@ -1,10 +1,6 @@
 <template>
   <button
-    :class="[
-      'btn',
-      `btn-${kind}`,
-      { 'btn-disabled': disabled }
-    ]"
+    :class="['btn', `btn-${kind}`, { 'is-disabled': disabled }]"
     :disabled="disabled"
     @click="$emit('click', $event)"
   >
@@ -14,7 +10,7 @@
 
 <script setup lang="ts">
 interface Props {
-  kind?: 'fill' | 'quiet' | 'outline' | 'ghost' | 'danger'
+  kind?: 'fill' | 'quiet' | 'outline' | 'ghost' | 'primary'
   disabled?: boolean
 }
 
@@ -37,68 +33,66 @@ defineEmits<{
   padding: 0 var(--gap-4);
   font-size: var(--font-sm);
   font-weight: 450;
-  color: var(--text-main);
-  background: transparent;
   border: 1px solid transparent;
   border-radius: var(--corner-md);
   cursor: pointer;
   transition: all var(--ease-quick);
   outline: none;
+  background: transparent;
 }
 
 .btn:focus-visible {
-  box-shadow: 0 0 0 2px var(--bg-page), 0 0 0 4px var(--focus-ring);
+  box-shadow: 0 0 0 2px var(--paper-bg), 0 0 0 4px var(--cinnabar);
 }
 
-/* Fill - 默认样式 */
+/* Fill - 深墨色 */
 .btn-fill {
-  background: var(--text-main);
-  color: var(--bg-card);
+  background: var(--ink-primary);
+  color: var(--paper-card);
 }
 
 .btn-fill:hover:not(:disabled) {
-  background: var(--text-subtle);
+  background: var(--ink-secondary);
 }
 
-/* Quiet - 低调样式 */
+/* Primary - 朱砂红 */
+.btn-primary {
+  background: var(--cinnabar);
+  color: #fff;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: var(--cinnabar-light);
+}
+
+/* Quiet - 宣纸灰 */
 .btn-quiet {
-  background: var(--bg-hover);
-  color: var(--text-main);
+  background: var(--paper-hover);
+  color: var(--ink-primary);
 }
 
 .btn-quiet:hover:not(:disabled) {
-  background: var(--bg-active);
+  background: var(--paper-active);
 }
 
-/* Outline - 边框样式 */
+/* Outline - 线框 */
 .btn-outline {
-  border-color: var(--line-default);
-  color: var(--text-main);
+  border-color: var(--border-default);
+  color: var(--ink-primary);
 }
 
 .btn-outline:hover:not(:disabled) {
-  background: var(--bg-hover);
-  border-color: var(--text-faint);
+  border-color: var(--cinnabar);
+  color: var(--cinnabar);
 }
 
-/* Ghost - 幽灵样式 */
+/* Ghost - 幽灵 */
 .btn-ghost {
-  color: var(--text-main);
+  color: var(--ink-primary);
 }
 
 .btn-ghost:hover:not(:disabled) {
-  background: var(--bg-hover);
-}
-
-/* Danger - 危险样式 */
-.btn-danger {
-  color: var(--error-text);
-  background: var(--error-bg);
-  border-color: transparent;
-}
-
-.btn-danger:hover:not(:disabled) {
-  background: #fecaca;
+  background: var(--paper-hover);
 }
 
 /* Disabled */

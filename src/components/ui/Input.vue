@@ -1,8 +1,8 @@
 <template>
-  <div class="input-wrap">
-    <label v-if="label" class="input-label">{{ label }}</label>
+  <div class="field">
+    <label v-if="label" class="field-label">{{ label }}</label>
     <input
-      :class="['input', { 'has-error': error }]"
+      :class="['field-input', { 'has-error': error }]"
       :type="type"
       :placeholder="placeholder"
       :value="modelValue"
@@ -11,7 +11,7 @@
       @blur="$emit('blur', $event)"
       @focus="$emit('focus', $event)"
     />
-    <p v-if="hint || error" class="input-hint" :class="{ 'is-error': error }">
+    <p v-if="hint || error" class="field-hint" :class="{ 'is-error': error }">
       {{ error || hint }}
     </p>
   </div>
@@ -45,64 +45,64 @@ const onInput = (e: Event) => {
 </script>
 
 <style scoped>
-.input-wrap {
+.field {
   display: flex;
   flex-direction: column;
   gap: var(--gap-2);
 }
 
-.input-label {
+.field-label {
   font-size: var(--font-sm);
   font-weight: 500;
-  color: var(--text-main);
+  color: var(--ink-primary);
 }
 
-.input {
+.field-input {
   height: 40px;
   padding: 0 var(--gap-3);
   font-size: var(--font-base);
-  color: var(--text-main);
-  background: var(--bg-card);
-  border: 1px solid var(--line-default);
+  color: var(--ink-primary);
+  background: var(--paper-card);
+  border: 1px solid var(--border-default);
   border-radius: var(--corner-md);
   outline: none;
-  transition: border-color var(--ease-quick), box-shadow var(--ease-quick);
+  transition: all var(--ease-quick);
 }
 
-.input::placeholder {
-  color: var(--text-faint);
+.field-input::placeholder {
+  color: var(--ink-muted);
 }
 
-.input:hover:not(:disabled) {
-  border-color: var(--text-faint);
+.field-input:hover:not(:disabled) {
+  border-color: var(--cinnabar-light);
 }
 
-.input:focus {
-  border-color: var(--text-main);
-  box-shadow: 0 0 0 3px var(--bg-hover);
+.field-input:focus {
+  border-color: var(--cinnabar);
+  box-shadow: 0 0 0 3px var(--cinnabar-ghost);
 }
 
-.input:disabled {
-  background: var(--bg-hover);
-  color: var(--text-faint);
+.field-input:disabled {
+  background: var(--paper-hover);
+  color: var(--ink-muted);
   cursor: not-allowed;
 }
 
-.input.has-error {
-  border-color: var(--error-text);
+.field-input.has-error {
+  border-color: var(--error);
 }
 
-.input.has-error:focus {
+.field-input.has-error:focus {
   box-shadow: 0 0 0 3px var(--error-bg);
 }
 
-.input-hint {
+.field-hint {
   font-size: var(--font-xs);
-  color: var(--text-subtle);
+  color: var(--ink-tertiary);
   margin: 0;
 }
 
-.input-hint.is-error {
-  color: var(--error-text);
+.field-hint.is-error {
+  color: var(--error);
 }
 </style>

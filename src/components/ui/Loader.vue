@@ -7,7 +7,7 @@
 </template>
 
 <script setup lang="ts">
-// iOS 18风格加载器 - 三个圆点依次跳动
+// 中国风格加载器 - 三个圆点依次跳动
 </script>
 
 <style scoped>
@@ -22,7 +22,7 @@
 .dot {
   width: 8px;
   height: 8px;
-  background: var(--text-subtle);
+  background: var(--cinnabar);
   border-radius: 50%;
   animation: bounce 1.4s infinite ease-in-out both;
 }
@@ -42,7 +42,7 @@
 @keyframes bounce {
   0%, 80%, 100% {
     transform: scale(0.6);
-    opacity: 0.4;
+    opacity: 0.5;
   }
   40% {
     transform: scale(1);

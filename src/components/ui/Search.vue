@@ -63,28 +63,28 @@ const clear = () => {
   gap: var(--gap-2);
   height: 40px;
   padding: 0 var(--gap-3);
-  background: var(--bg-card);
-  border: 1px solid var(--line-default);
+  background: var(--paper-card);
+  border: 1px solid var(--border-default);
   border-radius: var(--corner-full);
   transition: all var(--ease-quick);
 }
 
 .search:hover {
-  border-color: var(--text-faint);
+  border-color: var(--cinnabar-light);
 }
 
 .search.is-active {
-  border-color: var(--text-main);
-  background: var(--bg-card);
+  border-color: var(--cinnabar);
+  background: var(--paper-card);
 }
 
 .search-icon {
-  color: var(--text-faint);
+  color: var(--ink-tertiary);
   flex-shrink: 0;
 }
 
 .search.is-active .search-icon {
-  color: var(--text-subtle);
+  color: var(--cinnabar);
 }
 
 .search-input {
@@ -92,13 +92,13 @@ const clear = () => {
   border: none;
   background: transparent;
   font-size: var(--font-base);
-  color: var(--text-main);
+  color: var(--ink-primary);
   outline: none;
   min-width: 0;
 }
 
 .search-input::placeholder {
-  color: var(--text-faint);
+  color: var(--ink-muted);
 }
 
 .search-clear {
@@ -109,15 +109,15 @@ const clear = () => {
   height: 20px;
   padding: 0;
   border: none;
-  background: var(--bg-hover);
+  background: var(--paper-hover);
   border-radius: 50%;
   cursor: pointer;
-  color: var(--text-subtle);
+  color: var(--ink-tertiary);
   transition: all var(--ease-quick);
 }
 
 .search-clear:hover {
-  background: var(--bg-active);
-  color: var(--text-main);
+  background: var(--cinnabar);
+  color: #fff;
 }
 </style>
