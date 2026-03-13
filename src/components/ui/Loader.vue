@@ -1,13 +1,21 @@
 <template>
-  <span class="loader">
-    <span class="dot"></span>
-    <span class="dot"></span>
-    <span class="dot"></span>
-  </span>
+  <div class="loader">
+    <svg class="spinner" viewBox="0 0 50 50">
+      <circle
+        class="path"
+        cx="25"
+        cy="25"
+        r="20"
+        fill="none"
+        stroke-width="4"
+        stroke-linecap="round"
+      />
+    </svg>
+  </div>
 </template>
 
 <script setup lang="ts">
-// 中国风格加载器 - 三个圆点依次跳动
+// Material Design 风格环形加载器
 </script>
 
 <style scoped>
@@ -15,38 +23,39 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 4px;
-  height: 20px;
 }
 
-.dot {
-  width: 8px;
-  height: 8px;
-  background: var(--cinnabar);
-  border-radius: 50%;
-  animation: bounce 1.4s infinite ease-in-out both;
+.spinner {
+  width: 40px;
+  height: 40px;
+  animation: rotate 2s linear infinite;
 }
 
-.dot:nth-child(1) {
-  animation-delay: -0.32s;
+.path {
+  stroke: var(--cinnabar);
+  stroke-dasharray: 1, 200;
+  stroke-dashoffset: 0;
+  animation: dash 1.5s ease-in-out infinite;
 }
 
-.dot:nth-child(2) {
-  animation-delay: -0.16s;
-}
-
-.dot:nth-child(3) {
-  animation-delay: 0s;
-}
-
-@keyframes bounce {
-  0%, 80%, 100% {
-    transform: scale(0.6);
-    opacity: 0.5;
+@keyframes rotate {
+  100% {
+    transform: rotate(360deg);
   }
-  40% {
-    transform: scale(1);
-    opacity: 1;
+}
+
+@keyframes dash {
+  0% {
+    stroke-dasharray: 1, 200;
+    stroke-dashoffset: 0;
+  }
+  50% {
+    stroke-dasharray: 89, 200;
+    stroke-dashoffset: -35;
+  }
+  100% {
+    stroke-dasharray: 89, 200;
+    stroke-dashoffset: -124;
   }
 }
 </style>
