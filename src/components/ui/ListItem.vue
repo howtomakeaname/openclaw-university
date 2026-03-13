@@ -1,24 +1,21 @@
 <template>
   <div
-    :class="[
-      'list-item',
-      { 'list-item-clickable': clickable, 'list-item-bordered': bordered }
-    ]"
+    :class="['list-item', { 'is-clickable': clickable }]"
     @click="handleClick"
   >
-    <div v-if="$slots.prefix" class="list-item-prefix">
-      <slot name="prefix" />
+    <div v-if="$slots.before" class="list-before">
+      <slot name="before" />
     </div>
-    <div class="list-item-content">
-      <div class="list-item-title">
+    <div class="list-content">
+      <div v-if="$slots.title" class="list-title">
         <slot name="title" />
       </div>
-      <div v-if="$slots.subtitle" class="list-item-subtitle">
-        <slot name="subtitle" />
+      <div v-if="$slots.text" class="list-text">
+        <slot name="text" />
       </div>
     </div>
-    <div v-if="$slots.suffix" class="list-item-suffix">
-      <slot name="suffix" />
+    <div v-if="$slots.after" class="list-after">
+      <slot name="after" />
     </div>
   </div>
 </template>
@@ -26,12 +23,10 @@
 <script setup lang="ts">
 interface Props {
   clickable?: boolean
-  bordered?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  clickable: false,
-  bordered: true
+  clickable: false
 })
 
 const emit = defineEmits<{
@@ -48,60 +43,50 @@ const handleClick = (e: MouseEvent) => {
 <style scoped>
 .list-item {
   display: flex;
-  align-items: center;
-  padding: var(--spacing-md) 0;
-  gap: var(--spacing-md);
-  background-color: var(--color-background);
+  align-items: flex-start;
+  gap: var(--gap-3);
+  padding: var(--gap-3) 0;
+  min-height: 48px;
 }
 
-.list-item-bordered {
-  border-bottom: 1px solid var(--color-border);
-}
-
-.list-item-clickable {
+.list-item.is-clickable {
   cursor: pointer;
-  transition: background-color var(--transition-fast);
+  border-radius: var(--corner-md);
+  padding: var(--gap-3);
+  margin: 0 calc(-1 * var(--gap-3));
+  transition: background var(--ease-quick);
 }
 
-.list-item-clickable:hover {
-  background-color: var(--color-background-secondary);
-  margin: 0 -8px;
-  padding-left: 8px;
-  padding-right: 8px;
-  border-radius: var(--radius-md);
-  border-bottom-color: transparent;
+.list-item.is-clickable:hover {
+  background: var(--bg-hover);
 }
 
-.list-item-prefix {
+.list-before,
+.list-after {
   display: flex;
   align-items: center;
-  justify-content: center;
   flex-shrink: 0;
+  color: var(--text-subtle);
 }
 
-.list-item-content {
+.list-content {
   flex: 1;
   min-width: 0;
-}
-
-.list-item-title {
-  font-size: var(--text-base);
-  color: var(--color-primary);
-  font-weight: 500;
-  line-height: 1.4;
-}
-
-.list-item-subtitle {
-  font-size: var(--text-sm);
-  color: var(--color-secondary);
-  margin-top: 2px;
-  line-height: 1.4;
-}
-
-.list-item-suffix {
   display: flex;
-  align-items: center;
-  flex-shrink: 0;
-  color: var(--color-tertiary);
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+}
+
+.list-title {
+  font-size: var(--font-base);
+  color: var(--text-main);
+  line-height: 1.4;
+}
+
+.list-text {
+  font-size: var(--font-sm);
+  color: var(--text-subtle);
+  line-height: 1.4;
 }
 </style>

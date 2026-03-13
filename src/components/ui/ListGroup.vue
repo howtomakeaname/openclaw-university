@@ -4,19 +4,13 @@
   </div>
 </template>
 
-<script setup lang="ts">
-// 列表组容器组件
-</script>
+<script setup lang="ts"></script>
 
 <style scoped>
 .list-group {
-  background-color: var(--color-background);
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--color-border);
-  padding: 0 var(--spacing-md);
-}
-
-.list-group > *:last-child .list-item-bordered {
-  border-bottom: none;
+  background: var(--bg-card);
+  border-radius: var(--corner-lg);
+  border: 1px solid var(--line-default);
+  padding: var(--gap-2) var(--gap-3);
 }
 </style>

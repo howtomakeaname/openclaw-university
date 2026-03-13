@@ -1,6 +1,6 @@
 <template>
   <svg
-    :class="['icon', `icon-${size}`]"
+    class="icon"
     :width="sizeMap[size]"
     :height="sizeMap[size]"
     :fill="color || 'currentColor'"
@@ -13,20 +13,18 @@
 
 <script setup lang="ts">
 interface Props {
-  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+  size?: 'sm' | 'md' | 'lg'
   color?: string
 }
 
-const props = withDefaults(defineProps<Props>(), {
+withDefaults(defineProps<Props>(), {
   size: 'md'
 })
 
 const sizeMap = {
-  xs: 12,
   sm: 16,
   md: 20,
-  lg: 24,
-  xl: 32
+  lg: 24
 }
 </script>
 
@@ -34,6 +32,7 @@ const sizeMap = {
 .icon {
   display: inline-block;
   flex-shrink: 0;
-  vertical-align: middle;
+  vertical-align: text-bottom;
+  opacity: 0.85;
 }
 </style>

@@ -2,9 +2,8 @@
   <button
     :class="[
       'btn',
-      `btn-${variant}`,
-      `btn-${size}`,
-      { 'btn-disabled': disabled, 'btn-full': fullWidth }
+      `btn-${kind}`,
+      { 'btn-disabled': disabled }
     ]"
     :disabled="disabled"
     @click="$emit('click', $event)"
@@ -15,13 +14,14 @@
 
 <script setup lang="ts">
 interface Props {
-  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger'
-  size?: 'sm' | 'md' | 'lg'
+  kind?: 'fill' | 'quiet' | 'outline' | 'ghost' | 'danger'
   disabled?: boolean
-  fullWidth?: boolean
 }
 
-defineProps<Props>()
+withDefaults(defineProps<Props>(), {
+  kind: 'fill'
+})
+
 defineEmits<{
   click: [event: MouseEvent]
 }>()
@@ -32,95 +32,78 @@ defineEmits<{
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-weight: 500;
-  border: none;
-  border-radius: var(--radius-md);
+  gap: var(--gap-2);
+  height: 36px;
+  padding: 0 var(--gap-4);
+  font-size: var(--font-sm);
+  font-weight: 450;
+  color: var(--text-main);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--corner-md);
   cursor: pointer;
-  transition: all var(--transition-fast);
-  font-family: inherit;
-  font-size: var(--text-sm);
-  line-height: 1;
+  transition: all var(--ease-quick);
+  outline: none;
 }
 
-.btn:hover:not(:disabled) {
-  transform: translateY(-1px);
+.btn:focus-visible {
+  box-shadow: 0 0 0 2px var(--bg-page), 0 0 0 4px var(--focus-ring);
 }
 
-.btn:active:not(:disabled) {
-  transform: translateY(0);
+/* Fill - 默认样式 */
+.btn-fill {
+  background: var(--text-main);
+  color: var(--bg-card);
 }
 
-.btn-disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  pointer-events: none;
+.btn-fill:hover:not(:disabled) {
+  background: var(--text-subtle);
 }
 
-.btn-full {
-  width: 100%;
+/* Quiet - 低调样式 */
+.btn-quiet {
+  background: var(--bg-hover);
+  color: var(--text-main);
 }
 
-/* Variants */
-.btn-primary {
-  background-color: var(--color-primary);
-  color: white;
-  padding: 10px 16px;
+.btn-quiet:hover:not(:disabled) {
+  background: var(--bg-active);
 }
 
-.btn-primary:hover:not(:disabled) {
-  background-color: #374151;
-}
-
-.btn-secondary {
-  background-color: var(--color-background-secondary);
-  color: var(--color-primary);
-  padding: 10px 16px;
-}
-
-.btn-secondary:hover:not(:disabled) {
-  background-color: var(--color-border);
-}
-
+/* Outline - 边框样式 */
 .btn-outline {
-  background-color: transparent;
-  color: var(--color-primary);
-  border: 1px solid var(--color-border);
-  padding: 9px 15px;
+  border-color: var(--line-default);
+  color: var(--text-main);
 }
 
 .btn-outline:hover:not(:disabled) {
-  background-color: var(--color-background-secondary);
-  border-color: var(--color-secondary);
+  background: var(--bg-hover);
+  border-color: var(--text-faint);
 }
 
+/* Ghost - 幽灵样式 */
 .btn-ghost {
-  background-color: transparent;
-  color: var(--color-primary);
-  padding: 10px 16px;
+  color: var(--text-main);
 }
 
 .btn-ghost:hover:not(:disabled) {
-  background-color: var(--color-background-secondary);
+  background: var(--bg-hover);
 }
 
+/* Danger - 危险样式 */
 .btn-danger {
-  background-color: var(--color-danger);
-  color: white;
-  padding: 10px 16px;
+  color: var(--error-text);
+  background: var(--error-bg);
+  border-color: transparent;
 }
 
 .btn-danger:hover:not(:disabled) {
-  background-color: #b91c1c;
+  background: #fecaca;
 }
 
-/* Sizes */
-.btn-sm {
-  padding: 6px 12px;
-  font-size: var(--text-xs);
-}
-
-.btn-lg {
-  padding: 14px 24px;
-  font-size: var(--text-base);
+/* Disabled */
+.btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
 }
 </style>

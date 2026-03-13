@@ -1,41 +1,34 @@
 <template>
-  <div class="horizontal-scroll-container">
-    <div class="horizontal-scroll-content">
+  <div class="scroll-list">
+    <div class="scroll-track">
       <slot />
     </div>
   </div>
 </template>
 
-<script setup lang="ts">
-// 横向滚动列表容器组件
-</script>
+<script setup lang="ts"></script>
 
 <style scoped>
-.horizontal-scroll-container {
-  width: 100%;
+.scroll-list {
+  margin: 0 calc(-1 * var(--gap-4));
+  padding: 0 var(--gap-4);
   overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
-  margin: 0 -16px;
-  padding: 0 16px;
+  -webkit-overflow-scrolling: touch;
 }
 
-.horizontal-scroll-container::-webkit-scrollbar {
+.scroll-list::-webkit-scrollbar {
   display: none;
 }
 
-.horizontal-scroll-content {
+.scroll-track {
   display: flex;
-  gap: var(--spacing-md);
-  padding-bottom: 8px;
+  gap: var(--gap-3);
   width: fit-content;
-  min-width: 100%;
 }
 
-.horizontal-scroll-content > * {
+.scroll-track > * {
   flex-shrink: 0;
-  width: calc(33.333% - 11px);
-  min-width: 140px;
-  max-width: 200px;
+  width: 200px;
 }
 </style>
