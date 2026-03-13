@@ -1,326 +1,46 @@
 <template>
   <div class="app">
-    <header class="header">
-      <h1>UI 组件库</h1>
-      <p class="desc">典雅中国风轻红色设计系统</p>
-    </header>
-
-    <section class="section">
-      <h2 class="section-title">按钮</h2>
-      <div class="button-row">
-        <Button kind="fill">Fill</Button>
-        <Button kind="primary">Primary</Button>
-        <Button kind="quiet">Quiet</Button>
-        <Button kind="outline">Outline</Button>
-        <Button kind="ghost">Ghost</Button>
-        <Button kind="primary" disabled>Disabled</Button>
-      </div>
-    </section>
-
-    <section class="section">
-      <h2 class="section-title">图标</h2>
-      <div class="icon-row">
-        <Icon size="sm" color="var(--cinnabar)">
-          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-        </Icon>
-        <Icon size="md" color="var(--cinnabar)">
-          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-        </Icon>
-        <Icon size="lg" color="var(--cinnabar)">
-          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-        </Icon>
-      </div>
-    </section>
-
-    <section class="section">
-      <h2 class="section-title">加载器</h2>
-      <div class="loader-row">
-        <Loader />
-      </div>
-    </section>
-
-    <section class="section">
-      <h2 class="section-title">输入框</h2>
-      <div class="input-stack">
-        <Input
-          v-model="form.name"
-          label="用户名"
-          placeholder="请输入用户名"
-          hint="4-20个字符"
-        />
-        <Input
-          v-model="form.email"
-          label="邮箱"
-          type="email"
-          placeholder="请输入邮箱地址"
-          error="邮箱格式不正确"
-        />
-        <Input
-          label="密码"
-          type="password"
-          placeholder="请输入密码"
-          disabled
-        />
-      </div>
-    </section>
-
-    <section class="section">
-      <h2 class="section-title">搜索框</h2>
-      <Search v-model="searchValue" @search="onSearch" />
-    </section>
-
-    <section class="section">
-      <h2 class="section-title">选择框</h2>
-      <div class="input-stack">
-        <Select
-          v-model="form.country"
-          label="国家"
-          :options="countryOptions"
-          placeholder="选择国家"
-        />
-        <Select
-          v-model="form.city"
-          label="城市"
-          :options="cityOptions"
-          placeholder="选择城市"
-          hint="请先选择国家"
-        />
-      </div>
-    </section>
-
-    <section class="section">
-      <h2 class="section-title">列表</h2>
-      <ListGroup>
-        <ListItem clickable>
-          <template #lead>
-            <div class="avatar avatar-icon">
-              <Icon size="md" color="#fff"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></Icon>
-            </div>
-          </template>
-          <template #title>列表项标题</template>
-          <template #trail>
-            <Icon size="sm" color="var(--cinnabar)"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></Icon>
-          </template>
-        </ListItem>
-        <ListItem clickable>
-          <template #lead>
-            <div class="avatar avatar-text">A</div>
-          </template>
-          <template #title>带描述的列表项</template>
-          <template #desc>这是辅助说明文字</template>
-          <template #trail>
-            <span class="badge">2</span>
-          </template>
-        </ListItem>
-        <ListItem clickable>
-          <template #lead>
-            <div class="avatar avatar-img">
-              <img src="https://picsum.photos/id/64/40/40" alt="">
-            </div>
-          </template>
-          <template #title>图片前缀</template>
-          <template #desc>使用图片作为前缀</template>
-        </ListItem>
-      </ListGroup>
-    </section>
-
-    <section class="section">
-      <h2 class="section-title">横向滚动</h2>
-      <HorizontalScrollList>
-        <div v-for="i in 5" :key="i" class="card">
-          <div class="card-img">
-            <img :src="`https://picsum.photos/id/${i + 20}/200/120`" alt="">
-          </div>
-          <div class="card-body">
-            <div class="card-title">Card {{ i }}</div>
-            <div class="card-desc">Description</div>
-          </div>
-        </div>
-      </HorizontalScrollList>
-    </section>
+    <AppHeader />
+    <main class="main-content">
+      <router-view v-slot="{ Component }">
+        <transition name="page" mode="out-in">
+          <component :is="Component" />
+        </transition>
+      </router-view>
+    </main>
+    <AppFooter />
   </div>
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from 'vue'
-import Button from './components/ui/Button.vue'
-import Icon from './components/ui/Icon.vue'
-import Loader from './components/ui/Loader.vue'
-import Input from './components/ui/Input.vue'
-import Search from './components/ui/Search.vue'
-import Select from './components/ui/Select.vue'
-import ListItem from './components/ui/ListItem.vue'
-import ListGroup from './components/ui/ListGroup.vue'
-import HorizontalScrollList from './components/ui/HorizontalScrollList.vue'
-
-const form = reactive({
-  name: '',
-  email: 'invalid-email',
-  country: '',
-  city: ''
-})
-
-const searchValue = ref('')
-
-const countryOptions = [
-  { label: '中国', value: 'cn' },
-  { label: '美国', value: 'us' },
-  { label: '日本', value: 'jp' },
-  { label: '德国', value: 'de' }
-]
-
-const cityOptions = [
-  { label: '北京', value: 'beijing' },
-  { label: '上海', value: 'shanghai' },
-  { label: '广州', value: 'guangzhou' },
-  { label: '深圳', value: 'shenzhen' }
-]
-
-const onSearch = (val: string) => {
-  console.log('搜索:', val)
-}
+import AppHeader from './components/layout/AppHeader.vue'
+import AppFooter from './components/layout/AppFooter.vue'
 </script>
 
 <style scoped>
 .app {
-  max-width: 680px;
-  margin: 0 auto;
-  padding: var(--gap-6) var(--gap-4);
-}
-
-.header {
-  margin-bottom: var(--gap-6);
-  text-align: center;
-}
-
-.header h1 {
-  font-size: var(--font-xl);
-  font-weight: 600;
-  color: var(--cinnabar);
-  margin-bottom: var(--gap-1);
-}
-
-.desc {
-  color: var(--ink-tertiary);
-  font-size: var(--font-sm);
-}
-
-.section {
-  margin-bottom: var(--gap-6);
-}
-
-.section-title {
-  font-size: var(--font-xs);
-  font-weight: 600;
-  color: var(--ink-tertiary);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  margin-bottom: var(--gap-3);
-}
-
-.button-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--gap-2);
-}
-
-.icon-row {
-  display: flex;
-  align-items: center;
-  gap: var(--gap-4);
-}
-
-.loader-row {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--gap-4);
-  padding: var(--gap-3);
-}
-
-.input-stack {
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  gap: var(--gap-4);
 }
 
-.avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
+.main-content {
+  flex: 1;
 }
 
-.avatar-icon {
-  background: var(--cinnabar);
+/* 页面过渡动画 */
+.page-enter-active,
+.page-leave-active {
+  transition: opacity 0.2s ease, transform 0.2s ease;
 }
 
-.avatar-text {
-  background: var(--cinnabar-pale);
-  font-size: var(--font-sm);
-  font-weight: 500;
-  color: var(--cinnabar);
+.page-enter-from {
+  opacity: 0;
+  transform: translateY(10px);
 }
 
-.avatar-img {
-  overflow: hidden;
-  padding: 0;
-}
-
-.avatar-img img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.badge {
-  min-width: 20px;
-  height: 20px;
-  padding: 0 6px;
-  border-radius: var(--corner-full);
-  background: var(--cinnabar-pale);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: var(--font-xs);
-  font-weight: 500;
-  color: var(--cinnabar);
-}
-
-.card {
-  background: var(--paper-card);
-  border-radius: var(--corner-md);
-  border: 1px solid var(--border-default);
-  overflow: hidden;
-}
-
-.card-img {
-  height: 100px;
-  overflow: hidden;
-}
-
-.card-img img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.card-body {
-  padding: var(--gap-3);
-}
-
-.card-title {
-  font-size: var(--font-sm);
-  font-weight: 500;
-  color: var(--ink-primary);
-  margin-bottom: 2px;
-}
-
-.card-desc {
-  font-size: var(--font-xs);
-  color: var(--ink-tertiary);
+.page-leave-to {
+  opacity: 0;
+  transform: translateY(-10px);
 }
 </style>
