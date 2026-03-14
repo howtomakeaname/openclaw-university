@@ -3,9 +3,17 @@
     <div class="footer-container">
       <div class="footer-brand">
         <div class="brand-logo">
-          <Icon size="md" color="#fff">
-            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-          </Icon>
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- 学位帽顶部 -->
+            <path d="M12 3L1 9L12 15L23 9L12 3Z" fill="#fff"/>
+            <!-- 学位帽檐 -->
+            <path d="M3 10.5V16.5C3 16.5 7 19 12 19C17 19 21 16.5 21 16.5V10.5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            <!-- 流苏 -->
+            <path d="M21 10.5V14M21 16C21.5 16 22 15.5 22 15C22 14.5 21.5 14 21 14C20.5 14 20 14.5 20 15C20 15.5 20.5 16 21 16Z" stroke="#fff" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+            <!-- 龙虾钳子装饰 -->
+            <path d="M8 15C7 16 6 16.5 5 16C4 15.5 4 14 5 13C6 12 7 12.5 8 13.5" stroke="#d15d4e" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+            <path d="M16 15C17 16 18 16.5 19 16C20 15.5 20 14 19 13C18 12 17 12.5 16 13.5" stroke="#d15d4e" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+          </svg>
         </div>
         <div class="brand-info">
           <h3>Openclaw 技能大学</h3>
