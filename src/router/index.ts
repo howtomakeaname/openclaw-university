@@ -36,6 +36,12 @@ const router = createRouter({
       name: 'about',
       component: () => import('@/views/AboutView.vue'),
       meta: { title: '关于我们' }
+    },
+    {
+      path: '/ui-test',
+      name: 'ui-test',
+      component: () => import('@/views/UITestView.vue'),
+      meta: { title: 'UI 组件测试' }
     }
   ],
   scrollBehavior(to, from, savedPosition) {

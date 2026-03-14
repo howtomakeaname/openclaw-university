@@ -79,6 +79,22 @@
           </div>
         </div>
       </section>
+
+      <!-- 开发测试入口 -->
+      <section class="about-section dev-section">
+        <h2>开发者工具</h2>
+        <div class="dev-tools">
+          <router-link to="/ui-test" class="dev-link">
+            <Icon size="sm" color="var(--cinnabar)">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+            </Icon>
+            <span>UI 组件测试页面</span>
+            <Icon size="sm" color="var(--ink-muted)">
+              <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
+            </Icon>
+          </router-link>
+        </div>
+      </section>
     </div>
   </div>
 </template>
@@ -224,6 +240,41 @@ const timelineItems: TimelineItem[] = [
   font-size: var(--font-sm);
   color: var(--ink-tertiary);
   line-height: 1.6;
+}
+
+/* 开发者工具区域 */
+.dev-section {
+  margin-top: var(--gap-8);
+  padding-top: var(--gap-6);
+  border-top: 1px solid var(--border-light);
+}
+
+.dev-tools {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-2);
+}
+
+.dev-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--gap-2);
+  padding: var(--gap-3) var(--gap-4);
+  background: var(--paper-card);
+  border: 1px solid var(--border-default);
+  border-radius: var(--corner-lg);
+  color: var(--ink-primary);
+  text-decoration: none;
+  font-size: var(--font-base);
+  font-weight: 500;
+  transition: all var(--ease-quick);
+  max-width: fit-content;
+}
+
+.dev-link:hover {
+  border-color: var(--cinnabar);
+  color: var(--cinnabar);
+  background: var(--cinnabar-ghost);
 }
 
 @media (max-width: 768px) {

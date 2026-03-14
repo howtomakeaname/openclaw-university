@@ -31,7 +31,17 @@ const emit = defineEmits<{
   'update:modelValue': [value: MajorCategory | '']
 }>()
 
-const categories = [{ key: '', name: '全部', icon: 'M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z', color: 'var(--ink-secondary)' }, ...CATEGORIES]
+interface CatItem {
+  key: MajorCategory | ''
+  name: string
+  icon: string
+  color: string
+}
+
+const categories: CatItem[] = [
+  { key: '', name: '全部', icon: 'M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z', color: 'var(--ink-secondary)' },
+  ...CATEGORIES as CatItem[]
+]
 
 const select = (key: MajorCategory | '') => {
   emit('update:modelValue', key)
