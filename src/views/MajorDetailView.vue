@@ -47,32 +47,18 @@
     <!-- 主要内容 -->
     <div class="detail-content">
       <div class="content-main">
-        <!-- 学习路径时间线 -->
+    <!-- 技能树 -->
         <section class="content-section">
           <div class="section-header">
             <h2>
               <Icon size="md" color="var(--cinnabar)">
                 <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
               </Icon>
-              学习路径
+              技能学习路径
             </h2>
-            <span class="skill-count">{{ major.skills.length }} 个阶段</span>
+            <span class="skill-count">{{ major.skills.length }} 个技能点</span>
           </div>
-          <Timeline :items="skillTimelineItems" />
-        </section>
-
-        <!-- 技能树 -->
-        <section class="content-section">
-          <div class="section-header">
-            <h2>
-              <Icon size="md" color="var(--cinnabar)">
-                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-              </Icon>
-              技能详情
-            </h2>
-            <span class="skill-count">{{ major.skills.length }} 个技能</span>
-          </div>
-          <SkillTree :skills="major.skills" />
+          <SkillTree :skills="major.skills" @select="handleSkillSelect" />
         </section>
 
         <!-- 教材资源 -->
@@ -184,14 +170,12 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import type { Major } from '@/types'
+import type { Major, Skill } from '@/types'
 import { CATEGORY_MAP, DIFFICULTY_MAP } from '@/constants/categories'
 import { majorService } from '@/services/majorService'
 import Button from '@/components/ui/Button.vue'
 import Icon from '@/components/ui/Icon.vue'
 import Loader from '@/components/ui/Loader.vue'
-import Timeline from '@/components/ui/Timeline.vue'
-import type { TimelineItem } from '@/components/ui/Timeline.vue'
 import SkillTree from '@/components/major/SkillTree.vue'
 import MaterialList from '@/components/major/MaterialList.vue'
 
@@ -229,24 +213,11 @@ const formatDate = (dateStr: string) => {
   return `${date.getFullYear()}.${String(date.getMonth() + 1).padStart(2, '0')}.${String(date.getDate()).padStart(2, '0')}`
 }
 
-// 将技能转换为时间线项目
-const skillTimelineItems = computed<TimelineItem[]>(() => {
-  if (!major.value) return []
-  
-  const typeMap: Record<string, TimelineItem['type']> = {
-    basic: 'default',
-    intermediate: 'primary',
-    advanced: 'success'
-  }
-  
-  return major.value.skills.map((skill, index) => ({
-    title: skill.name,
-    description: skill.description,
-    time: `第 ${index + 1} 阶段`,
-    type: typeMap[skill.level] || 'default',
-    active: index === 0 // 第一个标记为激活状态
-  }))
-})
+// 处理技能选择
+const handleSkillSelect = (skill: Skill) => {
+  console.log('选中技能:', skill.name)
+  // 可以在这里添加跳转逻辑，如打开技能详情抽屉等
+}
 
 const loadMajor = async () => {
   const id = route.params.id as string

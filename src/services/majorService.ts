@@ -19,11 +19,19 @@ const MOCK_MAJORS: Major[] = [
     createdAt: '2024-01-15',
     updatedAt: '2024-12-01',
     skills: [
-      { id: 's1', name: 'HTML5/CSS3 基础', description: '语义化标签、Flex/Grid布局、响应式设计', level: 'beginner', order: 1 },
-      { id: 's2', name: 'JavaScript 核心', description: 'ES6+语法、异步编程、原型链、闭包', level: 'intermediate', order: 2 },
-      { id: 's3', name: 'TypeScript 进阶', description: '类型系统、泛型、装饰器、类型推断', level: 'intermediate', order: 3 },
-      { id: 's4', name: 'Vue.js 生态', description: 'Vue3组合式API、Pinia状态管理、Vue Router', level: 'intermediate', order: 4 },
-      { id: 's5', name: '前端工程化', description: 'Vite/Webpack、CI/CD、单元测试、性能优化', level: 'advanced', order: 5 }
+      // 根节点
+      { id: 's1', name: 'Web开发基础', description: '构建现代Web应用的基础技术栈', level: 'beginner', order: 1, icon: 'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z', estimatedTime: '4周' },
+      { id: 's5', name: '前端工程化', description: '企业级项目构建、部署与优化', level: 'advanced', order: 5, icon: 'M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14h-2V9h-2V7h4v10z', estimatedTime: '3周' },
+      // s1 的子技能
+      { id: 's1-1', name: 'HTML5/CSS3 基础', description: '语义化标签、Flex/Grid布局、响应式设计', level: 'beginner', order: 1, parentId: 's1', estimatedTime: '1周' },
+      { id: 's1-2', name: 'JavaScript 核心', description: 'ES6+语法、异步编程、原型链、闭包', level: 'intermediate', order: 2, parentId: 's1', estimatedTime: '2周' },
+      { id: 's1-3', name: 'TypeScript 进阶', description: '类型系统、泛型、装饰器、类型推断', level: 'intermediate', order: 3, parentId: 's1', estimatedTime: '1周' },
+      // s1-2 的子技能
+      { id: 's1-2-1', name: 'ES6+ 新特性', description: '箭头函数、解构、Promise、async/await', level: 'beginner', order: 1, parentId: 's1-2', estimatedTime: '3天' },
+      { id: 's1-2-2', name: '异步编程', description: '事件循环、Promise链、错误处理', level: 'intermediate', order: 2, parentId: 's1-2', estimatedTime: '4天' },
+      // s1-3 的子技能
+      { id: 's1-3-1', name: 'Vue.js 生态', description: 'Vue3组合式API、Pinia状态管理、Vue Router', level: 'intermediate', order: 1, parentId: 's1-3', estimatedTime: '1周' },
+      { id: 's1-3-2', name: 'React 生态', description: 'Hooks、Redux、Next.js服务端渲染', level: 'intermediate', order: 2, parentId: 's1-3', estimatedTime: '1周' }
     ],
     materials: [
       { id: 'm1', title: 'Vue.js 官方文档', type: 'documentation', description: 'Vue.js渐进式JavaScript框架官方文档', source: 'Vue.js', url: 'https://vuejs.org', tags: ['Vue', '官方'], addedAt: '2024-01-01' },

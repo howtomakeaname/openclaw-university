@@ -45,6 +45,11 @@ export interface Skill {
   description: string
   level: Difficulty
   order: number
+  parentId?: string | null  // 父技能ID，null表示根节点
+  children?: Skill[]        // 子技能数组
+  icon?: string             // 技能图标路径/SVG
+  estimatedTime?: string    // 预估学习时间
+  isCompleted?: boolean     // 是否已完成
 }
 
 /**

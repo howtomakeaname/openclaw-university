@@ -1,133 +1,130 @@
 <template>
   <div class="skill-tree">
-    <div class="tree-line"></div>
-    <div
-      v-for="(skill, index) in sortedSkills"
-      :key="skill.id"
-      class="skill-node"
-      :class="{ active: index <= activeIndex }"
-    >
-      <div class="node-marker" :style="markerStyle(skill.level)">
-        <span class="node-number">{{ index + 1 }}</span>
-      </div>
-      <div class="node-content">
-        <h4 class="skill-name">{{ skill.name }}</h4>
-        <p class="skill-desc">{{ skill.description }}</p>
-        <span class="skill-level" :style="levelStyle(skill.level)">
-          {{ levelLabel(skill.level) }}
-        </span>
-      </div>
+    <!-- 根技能列表 -->
+    <div v-for="skill in rootSkills" :key="skill.id" class="tree-root">
+      <SkillNode
+        :skill="skill"
+        :level="0"
+        :expanded-ids="expandedIds"
+        :completed-ids="completedIds"
+        @toggle="toggleNode"
+        @select="selectNode"
+      />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
-import type { Skill, Difficulty } from '@/types'
-import { DIFFICULTY_MAP } from '@/constants/categories'
+import { ref, computed } from 'vue'
+import type { Skill } from '@/types'
+import SkillNode from './SkillNode.vue'
 
 interface Props {
   skills: Skill[]
-  activeIndex?: number
+  defaultExpanded?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  activeIndex: -1
+  defaultExpanded: true
 })
 
-const sortedSkills = computed(() => {
-  return [...props.skills].sort((a, b) => a.order - b.order)
+const emit = defineEmits<{
+  select: [skill: Skill]
+}>()
+
+// 将扁平的技能列表转换为树形结构
+const skillTree = computed(() => {
+  const skillMap = new Map<string, Skill & { children: Skill[] }>()
+  
+  // 初始化所有技能
+  props.skills.forEach(skill => {
+    skillMap.set(skill.id, { ...skill, children: [] })
+  })
+  
+  const roots: Skill[] = []
+  
+  // 构建父子关系
+  props.skills.forEach(skill => {
+    const node = skillMap.get(skill.id)!
+    if (skill.parentId && skillMap.has(skill.parentId)) {
+      const parent = skillMap.get(skill.parentId)!
+      parent.children = parent.children || []
+      parent.children.push(node)
+    } else {
+      roots.push(node)
+    }
+  })
+  
+  // 按 order 排序
+  const sortByOrder = (items: Skill[]) => {
+    items.sort((a, b) => a.order - b.order)
+    items.forEach(item => {
+      if (item.children?.length) {
+        sortByOrder(item.children)
+      }
+    })
+  }
+  sortByOrder(roots)
+  
+  return roots
 })
 
-const markerStyle = (level: Difficulty) => {
-  const color = DIFFICULTY_MAP[level]?.color || 'var(--cinnabar)'
-  return { borderColor: color }
+const rootSkills = computed(() => skillTree.value)
+
+// 展开/折叠状态
+const expandedIds = ref<Set<string>>(new Set())
+// 完成状态
+const completedIds = ref<Set<string>>(new Set())
+
+// 初始化展开状态
+if (props.defaultExpanded) {
+  props.skills.forEach(skill => {
+    expandedIds.value.add(skill.id)
+  })
 }
 
-const levelStyle = (level: Difficulty) => {
-  const color = DIFFICULTY_MAP[level]?.color || 'var(--cinnabar)'
-  return { color, background: color + '15' }
+// 切换节点展开/折叠
+const toggleNode = (id: string) => {
+  if (expandedIds.value.has(id)) {
+    expandedIds.value.delete(id)
+  } else {
+    expandedIds.value.add(id)
+  }
 }
 
-const levelLabel = (level: Difficulty) => {
-  return DIFFICULTY_MAP[level]?.name || level
+// 选择节点
+const selectNode = (skill: Skill) => {
+  emit('select', skill)
 }
+
+// 暴露方法给父组件
+defineExpose({
+  expandAll: () => {
+    props.skills.forEach(skill => expandedIds.value.add(skill.id))
+  },
+  collapseAll: () => {
+    expandedIds.value.clear()
+  },
+  toggleComplete: (id: string) => {
+    if (completedIds.value.has(id)) {
+      completedIds.value.delete(id)
+    } else {
+      completedIds.value.add(id)
+    }
+  }
+})
 </script>
 
 <style scoped>
 .skill-tree {
-  position: relative;
-  padding-left: 24px;
+  padding: var(--gap-3);
 }
 
-.tree-line {
-  position: absolute;
-  left: 15px;
-  top: 12px;
-  bottom: 12px;
-  width: 2px;
-  background: var(--border-default);
+.tree-root {
+  margin-bottom: var(--gap-4);
 }
 
-.skill-node {
-  display: flex;
-  gap: var(--gap-3);
-  padding: var(--gap-3) 0;
-  position: relative;
-}
-
-.node-marker {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: var(--paper-card);
-  border: 2px solid var(--border-default);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  z-index: 1;
-  transition: all var(--ease-quick);
-}
-
-.skill-node.active .node-marker {
-  background: var(--cinnabar);
-  border-color: var(--cinnabar);
-}
-
-.node-number {
-  font-size: var(--font-xs);
-  font-weight: 600;
-  color: var(--ink-tertiary);
-}
-
-.skill-node.active .node-number {
-  color: #fff;
-}
-
-.node-content {
-  flex: 1;
-  min-width: 0;
-}
-
-.skill-name {
-  font-size: var(--font-base);
-  font-weight: 500;
-  color: var(--ink-primary);
-  margin-bottom: 4px;
-}
-
-.skill-desc {
-  font-size: var(--font-sm);
-  color: var(--ink-tertiary);
-  margin-bottom: var(--gap-2);
-  line-height: 1.5;
-}
-
-.skill-level {
-  font-size: var(--font-xs);
-  font-weight: 500;
-  padding: 2px 8px;
-  border-radius: var(--corner-full);
+.tree-root:last-child {
+  margin-bottom: 0;
 }
 </style>
