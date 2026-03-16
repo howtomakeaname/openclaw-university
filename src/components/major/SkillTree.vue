@@ -81,13 +81,17 @@
       </svg>
     </div>
 
-    <!-- 技能详情弹窗 -->
+    <!-- 技能详情弹窗 - Material Design 风格 -->
     <Transition name="slide-up">
       <div v-if="selectedSkill" class="skill-detail-panel" @click.self="closeDetail">
         <div class="detail-content">
+          <!-- Material Design 拖拽指示条 -->
+          <div class="drag-indicator"></div>
+          
           <button class="close-btn" @click="closeDetail">
             <Icon size="md"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></Icon>
           </button>
+          
           <div class="detail-header">
             <div class="detail-icon" :style="getDetailIconStyle">
               <Icon size="lg" :color="getDetailIconColor">
@@ -96,41 +100,63 @@
               </Icon>
             </div>
             <div class="detail-title-group">
-              <h3>{{ selectedSkill.name }}</h3>
               <span class="detail-level" :style="getDetailLevelStyle">
                 {{ getLevelLabel(selectedSkill.level) }}
               </span>
+              <h3>{{ selectedSkill.name }}</h3>
             </div>
           </div>
+          
           <p class="detail-desc">{{ selectedSkill.description }}</p>
+          
           <div class="detail-meta">
             <div class="meta-item" v-if="selectedSkill.estimatedTime">
-              <Icon size="sm" color="var(--ink-tertiary)">
-                <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
-              </Icon>
-              <span>预计耗时：{{ selectedSkill.estimatedTime }}</span>
+              <div class="meta-icon">
+                <Icon size="sm" color="var(--ink-tertiary)">
+                  <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
+                </Icon>
+              </div>
+              <div class="meta-content">
+                <span class="meta-label">预计耗时</span>
+                <span class="meta-value">{{ selectedSkill.estimatedTime }}</span>
+              </div>
             </div>
             <div class="meta-item" v-if="prereqNames.length">
-              <Icon size="sm" color="var(--ink-tertiary)">
-                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
-              </Icon>
-              <span>前置技能：{{ prereqNames.join('、') }}</span>
+              <div class="meta-icon">
+                <Icon size="sm" color="var(--ink-tertiary)">
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+                </Icon>
+              </div>
+              <div class="meta-content">
+                <span class="meta-label">前置技能</span>
+                <span class="meta-value">{{ prereqNames.join('、') }}</span>
+              </div>
             </div>
           </div>
+          
+          <div class="detail-divider"></div>
+          
           <div class="detail-actions">
             <Button 
               kind="primary" 
-              class="action-btn"
+              class="action-btn primary-action"
               :disabled="isLocked(selectedSkill)"
               @click="startLearning"
             >
+              <Icon size="sm" color="#fff">
+                <path d="M8 5v14l11-7z"/>
+              </Icon>
               {{ isLocked(selectedSkill) ? '先完成前置技能' : (isCompleted(selectedSkill.id) ? '重新学习' : '开始学习') }}
             </Button>
             <Button 
-              kind="outline" 
-              class="action-btn"
+              kind="ghost" 
+              class="action-btn secondary-action"
               @click="toggleComplete(selectedSkill.id)"
             >
+              <Icon size="sm" :color="isCompleted(selectedSkill.id) ? 'var(--success)' : 'var(--ink-secondary)'">
+                <path v-if="isCompleted(selectedSkill.id)" d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                <circle v-else cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/>
+              </Icon>
               {{ isCompleted(selectedSkill.id) ? '标记为未完成' : '标记为已完成' }}
             </Button>
           </div>
@@ -537,34 +563,51 @@ watch(() => props.skills, updateConnections, { deep: true })
   stroke: var(--border-default);
 }
 
-/* 详情面板 */
+/* 详情面板 - Material Design 风格 */
 .skill-detail-panel {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.6);
   display: flex;
   align-items: flex-end;
   justify-content: center;
   z-index: 1000;
   padding: var(--gap-4);
+  backdrop-filter: blur(4px);
 }
 
 .detail-content {
   background: var(--paper-card);
-  border-radius: var(--corner-xl);
+  border-radius: var(--corner-xl) var(--corner-xl) var(--corner-md) var(--corner-md);
   width: 100%;
-  max-width: 480px;
+  max-width: 560px;
   padding: var(--gap-5);
   position: relative;
-  box-shadow: var(--shadow-xl);
+  box-shadow: 0 8px 10px -5px rgba(0, 0, 0, 0.2),
+              0 16px 24px 2px rgba(0, 0, 0, 0.14),
+              0 6px 30px 5px rgba(0, 0, 0, 0.12);
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+/* Material Design 拖拽指示条 */
+.drag-indicator {
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 32px;
+  height: 4px;
+  background: var(--border-light);
+  border-radius: 2px;
 }
 
 .close-btn {
   position: absolute;
-  top: var(--gap-3);
-  right: var(--gap-3);
-  width: 32px;
-  height: 32px;
+  top: var(--gap-4);
+  right: var(--gap-4);
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   border: none;
   background: var(--paper-hover);
@@ -573,86 +616,161 @@ watch(() => props.skills, updateConnections, { deep: true })
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all var(--ease-quick);
+  transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .close-btn:hover {
   background: var(--cinnabar-ghost);
   color: var(--cinnabar);
+  transform: rotate(90deg);
 }
 
 .detail-header {
   display: flex;
-  align-items: center;
-  gap: var(--gap-3);
-  margin-bottom: var(--gap-4);
+  align-items: flex-start;
+  gap: var(--gap-4);
+  margin-bottom: var(--gap-5);
+  padding-top: var(--gap-2);
 }
 
 .detail-icon {
-  width: 56px;
-  height: 56px;
+  width: 64px;
+  height: 64px;
   border-radius: var(--corner-lg);
   border: 2px solid;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.2);
 }
 
 .detail-title-group {
   flex: 1;
   min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-2);
+  margin-top: var(--gap-1);
 }
 
 .detail-title-group h3 {
-  font-size: var(--font-lg);
-  font-weight: 600;
+  font-size: 24px;
+  font-weight: 500;
   color: var(--ink-primary);
-  margin-bottom: var(--gap-1);
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+  margin: 0;
 }
 
 .detail-level {
   font-size: var(--font-xs);
   font-weight: 500;
-  padding: 2px 8px;
+  padding: 4px 10px;
   border-radius: var(--corner-full);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  align-self: flex-start;
 }
 
 .detail-desc {
   font-size: var(--font-base);
   color: var(--ink-secondary);
-  line-height: 1.6;
-  margin-bottom: var(--gap-4);
+  line-height: 1.7;
+  margin-bottom: var(--gap-5);
+  letter-spacing: 0.01em;
 }
 
 .detail-meta {
   display: flex;
   flex-direction: column;
-  gap: var(--gap-2);
-  margin-bottom: var(--gap-4);
+  gap: var(--gap-3);
+  margin-bottom: var(--gap-5);
 }
 
 .meta-item {
   display: flex;
+  align-items: flex-start;
+  gap: var(--gap-3);
+  padding: var(--gap-3);
+  background: var(--paper-hover);
+  border-radius: var(--corner-md);
+  transition: background 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.meta-item:hover {
+  background: var(--border-light);
+}
+
+.meta-icon {
+  width: 40px;
+  height: 40px;
+  display: flex;
   align-items: center;
-  gap: var(--gap-2);
+  justify-content: center;
+  background: var(--paper-card);
+  border-radius: var(--corner-md);
+  flex-shrink: 0;
+}
+
+.meta-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.meta-label {
+  font-size: var(--font-xs);
+  color: var(--ink-muted);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.meta-value {
   font-size: var(--font-sm);
-  color: var(--ink-tertiary);
+  font-weight: 500;
+  color: var(--ink-primary);
+}
+
+.detail-divider {
+  height: 1px;
+  background: var(--border-light);
+  margin: var(--gap-5) 0;
 }
 
 .detail-actions {
   display: flex;
-  gap: var(--gap-2);
+  gap: var(--gap-3);
 }
 
 .action-btn {
   flex: 1;
+  gap: var(--gap-2);
 }
 
-/* 动画 */
+.primary-action {
+  box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2),
+              0 6px 10px 0 rgba(0, 0, 0, 0.14),
+              0 1px 18px 0 rgba(0, 0, 0, 0.12);
+  transition: all 250ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.primary-action:hover {
+  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+              0 8px 10px 1px rgba(0, 0, 0, 0.14),
+              0 3px 14px 2px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
+}
+
+.secondary-action {
+  gap: var(--gap-2);
+}
+
+/* Material Design 动画 */
 .slide-up-enter-active,
 .slide-up-leave-active {
-  transition: all 0.3s ease;
+  transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .slide-up-enter-from,

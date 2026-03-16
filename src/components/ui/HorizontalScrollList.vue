@@ -13,12 +13,35 @@
   margin: 0 calc(-1 * var(--gap-4));
   padding: 0 var(--gap-4);
   overflow-x: auto;
-  scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
+  padding-bottom: var(--gap-2);
+  margin-bottom: calc(-1 * var(--gap-2));
 }
 
+/* 滚动条样式 */
 .scroll::-webkit-scrollbar {
-  display: none;
+  height: 6px;
+}
+
+.scroll::-webkit-scrollbar-track {
+  background: var(--border-light);
+  border-radius: 3px;
+}
+
+.scroll::-webkit-scrollbar-thumb {
+  background: var(--ink-muted);
+  border-radius: 3px;
+  transition: background var(--ease-standard);
+}
+
+.scroll::-webkit-scrollbar-thumb:hover {
+  background: var(--ink-tertiary);
+}
+
+/* Firefox 滚动条 */
+.scroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--ink-muted) var(--border-light);
 }
 
 .scroll-content {

@@ -38,7 +38,6 @@ defineEmits<{
   cursor: pointer;
   transition: all var(--ease-quick);
   outline: none;
-  background: transparent;
 }
 
 .btn:focus-visible {

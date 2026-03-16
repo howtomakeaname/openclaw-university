@@ -90,5 +90,9 @@ body {
     --cinnabar: #d4776a;
     --cinnabar-pale: #4a3834;
     --cinnabar-ghost: #2f2420;
+    
+    --error: #d46a6a;
+    --error-bg: #3a2424;
+    --success: #6a9c6a;
   }
 }
