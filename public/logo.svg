@@ -1,0 +1,18 @@
+<svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- 背景圆形 -->
+  <circle cx="128" cy="128" r="128" fill="url(#grad1)"/>
+  <!-- 书本/开放的爪子形状 -->
+  <path d="M128 32C88 32 56 56 56 96C56 136 88 152 128 176C168 152 200 136 200 96C200 56 168 32 128 32Z" fill="#fff" fill-opacity="0.9"/>
+  <!-- 爪子指节 -->
+  <path d="M80 64C74 58 68 58 62 64C56 70 56 80 62 86C68 92 74 92 80 86" stroke="#fff" stroke-width="12" stroke-linecap="round" fill="none"/>
+  <path d="M128 56C122 50 116 50 110 56C104 62 104 72 110 78C116 84 122 84 128 78" stroke="#fff" stroke-width="12" stroke-linecap="round" fill="none"/>
+  <path d="M176 64C170 58 164 58 158 64C152 70 152 80 158 86C164 92 170 92 176 86" stroke="#fff" stroke-width="12" stroke-linecap="round" fill="none"/>
+  <!-- 渐变定义 -->
+  <defs>
+    <linearGradient id="grad1" x1="32" y1="32" x2="224" y2="224" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#E64A19"/>
+      <stop offset="0.5" stop-color="#D84315"/>
+      <stop offset="1" stop-color="#BF360C"/>
+    </linearGradient>
+  </defs>
+</svg>

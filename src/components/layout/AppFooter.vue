@@ -3,16 +3,23 @@
     <div class="footer-container">
       <div class="footer-brand">
         <div class="brand-logo">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <!-- 学位帽顶部 -->
-            <path d="M12 3L1 9L12 15L23 9L12 3Z" fill="#fff"/>
-            <!-- 学位帽檐 -->
-            <path d="M3 10.5V16.5C3 16.5 7 19 12 19C17 19 21 16.5 21 16.5V10.5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-            <!-- 流苏 -->
-            <path d="M21 10.5V14M21 16C21.5 16 22 15.5 22 15C22 14.5 21.5 14 21 14C20.5 14 20 14.5 20 15C20 15.5 20.5 16 21 16Z" stroke="#fff" stroke-width="1.5" stroke-linecap="round" fill="none"/>
-            <!-- 龙虾钳子装饰 -->
-            <path d="M8 15C7 16 6 16.5 5 16C4 15.5 4 14 5 13C6 12 7 12.5 8 13.5" stroke="#d15d4e" stroke-width="1.5" stroke-linecap="round" fill="none"/>
-            <path d="M16 15C17 16 18 16.5 19 16C20 15.5 20 14 19 13C18 12 17 12.5 16 13.5" stroke="#d15d4e" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- 背景圆形 -->
+            <circle cx="14" cy="14" r="13" fill="url(#grad1)"/>
+            <!-- 书本/开放的爪子形状 -->
+            <path d="M14 5C10 5 7 7 7 10C7 13 10 14.5 14 16.5C18 14.5 21 13 21 10C21 7 18 5 14 5Z" fill="#fff" fill-opacity="0.9"/>
+            <!-- 爪子指节 -->
+            <path d="M9 8C8.5 7.5 8 7.5 7.5 8C7 8.5 7 9 7.5 9.5C8 10 8.5 10 9 9.5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+            <path d="M14 7C13.5 6.5 13 6.5 12.5 7C12 7.5 12 8 12.5 8.5C13 9 13.5 9 14 8.5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+            <path d="M19 8C18.5 7.5 18 7.5 17.5 8C17 8.5 17 9 17.5 9.5C18 10 18.5 10 19 9.5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+            <!-- 渐变定义 -->
+            <defs>
+              <linearGradient id="grad1" x1="4" y1="4" x2="24" y2="24" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#E64A19"/>
+                <stop offset="0.5" stop-color="#D84315"/>
+                <stop offset="1" stop-color="#BF360C"/>
+              </linearGradient>
+            </defs>
           </svg>
         </div>
         <div class="brand-info">
@@ -45,7 +52,7 @@
 
     <div class="footer-bottom">
       <div class="bottom-container">
-        <p class="copyright">© 2024 Openclaw University. All rights reserved.</p>
+        <p class="copyright">© 2026 Openclaw University. All rights reserved.</p>
         <div class="social-links">
           <a href="#" aria-label="GitHub">
             <Icon size="sm" color="var(--ink-tertiary)">
@@ -91,8 +98,6 @@ import Icon from '../ui/Icon.vue'
 .brand-logo {
   width: 44px;
   height: 44px;
-  background: var(--cinnabar);
-  border-radius: var(--corner-md);
   display: flex;
   align-items: center;
   justify-content: center;
