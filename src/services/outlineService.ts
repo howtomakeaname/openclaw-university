@@ -1,7 +1,16 @@
 import type { OutlineMajor, OutlineMajorDetail } from '@/types'
 
-const OUTLINE_DATA_PATH = '/data/outline/data.json'
-const OUTLINE_BASE_PATH = '/data/outline'
+// 获取基础路径
+const getBasePath = (): string => {
+  // 使用 Vite 提供的 BASE_URL
+  const base = import.meta.env.BASE_URL || '/'
+  // 确保 base 总是以 / 结尾
+  return base.endsWith('/') ? base : base + '/'
+}
+
+// 动态获取路径
+const getOutlineDataPath = (): string => `${getBasePath()}data/outline/data.json`
+const getOutlineBasePath = (): string => `${getBasePath()}data/outline`
 
 /**
  * 模拟网络延迟
@@ -15,7 +24,7 @@ function simulateDelay(ms: number): Promise<void> {
  */
 async function loadMarkdownFile(filename: string): Promise<string> {
   try {
-    const response = await fetch(`${OUTLINE_BASE_PATH}/${filename}`)
+    const response = await fetch(`${getOutlineBasePath()}/${filename}`)
     if (!response.ok) return ''
     return await response.text()
   } catch {
@@ -33,7 +42,7 @@ export const outlineService = {
   async getAllMajors(): Promise<OutlineMajor[]> {
     await simulateDelay(300)
     try {
-      const response = await fetch(OUTLINE_DATA_PATH)
+      const response = await fetch(getOutlineDataPath())
       if (!response.ok) return []
       return await response.json()
     } catch {
