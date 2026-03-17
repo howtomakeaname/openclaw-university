@@ -9,6 +9,7 @@
 | Copywriting | 撰写营销文案：落地页、邮件、广告、销售页。覆盖AIDA、PAS、FAB公式、标题写作、情感触发、A/B测试 | [https://clawhub.ai/JK-0001/copywriting](https://clawhub.ai/JK-0001/copywriting) |
 | copywriter | 撰写UX文案、营销内容和产品信息。按钮标签、错误信息、落地页、邮件、CTA、空状态 | [https://clawhub.ai/killerapp/copywriter](https://clawhub.ai/killerapp/copywriter) |
 | Marketing Skills | 23个营销模块：CRO、SEO、文案、分析、发布、广告、社媒，提供检查清单和即用交付物 | [https://clawhub.ai/jchopard69/marketing-skills](https://clawhub.ai/jchopard69/marketing-skills) |
+
 2. 内容人性化
 
 | 技能名称 | 技能描述 | URL |
@@ -23,6 +24,7 @@
 | --- | --- | --- |
 | image-cog | AI图片生成。创建图片、编辑照片、一致角色、产品摄影、参考图片、风格迁移 | [https://clawhub.ai/nitishgargiitd/image-cog](https://clawhub.ai/nitishgargiitd/image-cog) |
 | Image | 创建、检查、处理和优化图片文件。支持格式选择、调整大小、压缩、颜色配置、元数据 | [https://clawhub.ai/ivangdavila/image](https://clawhub.ai/ivangdavila/image) |
+
 2. 图片处理
 
 | 技能名称 | 技能描述 | URL |
@@ -50,6 +52,7 @@
 | --- | --- | --- |
 | Ai Ppt Generator | 使用百度AI生成PPT。根据内容智能选择模板 | [https://clawhub.ai/ide-rea/ai-ppt-generator](https://clawhub.ai/ide-rea/ai-ppt-generator) |
 | Powerpoint / PPTX | 创建、检查和编辑PowerPoint演示文稿。支持布局、模板、占位符、备注、图表 | [https://clawhub.ai/ivangdavila/powerpoint-pptx](https://clawhub.ai/ivangdavila/powerpoint-pptx) |
+
 2. 在线演示
 
 | 技能名称 | 技能描述 | URL |
@@ -63,6 +66,7 @@
 | --- | --- | --- |
 | Openai Whisper | 使用Whisper CLI进行本地语音转文字（无需API密钥） | [https://clawhub.ai/steipete/openai-whisper](https://clawhub.ai/steipete/openai-whisper) |
 | Local Whisper | 使用OpenAI Whisper进行本地语音转文本。模型下载后完全离线运行，高质量转录 | [https://clawhub.ai/araa47/local-whisper](https://clawhub.ai/araa47/local-whisper) |
+
 2. 文字转语音
 
 | 技能名称 | 技能描述 | URL |
@@ -76,17 +80,20 @@
 | --- | --- | --- |
 | Postiz | 调度社媒和聊天帖子到28+渠道：X、LinkedIn、Instagram、Facebook、TikTok、YouTube、Reddit、Pinterest等 | [https://clawhub.ai/nevo-david/postiz](https://clawhub.ai/nevo-david/postiz) |
 | Upload-Post | 上传内容到社媒平台：TikTok、Instagram、YouTube、X、LinkedIn、Facebook、Threads、Pinterest、Reddit | [https://clawhub.ai/victorcavero14/upload-post](https://clawhub.ai/victorcavero14/upload-post) |
+
 2. YouTube运营
 
 | 技能名称 | 技能描述 | URL |
 | --- | --- | --- |
 | YouTube Watcher | 获取和读取YouTube视频转录文本。支持视频摘要、内容问答、信息提取 | [https://clawhub.ai/Michaelgathara/youtube-watcher](https://clawhub.ai/Michaelgathara/youtube-watcher) |
 | YouTube | YouTube Data API集成。搜索视频、管理播放列表、访问频道数据、互动评论 | [https://clawhub.ai/byungkyu/youtube-api-skill](https://clawhub.ai/byungkyu/youtube-api-skill) |
+
 3. 即时通讯运营
 
 | 技能名称 | 技能描述 | URL |
 | --- | --- | --- |
 | Telegram | 设计Telegram Bot API工作流和命令驱动的对话 | [https://clawhub.ai/codedao12/telegram](https://clawhub.ai/codedao12/telegram) |
+
 4. 内容监控
 
 | 技能名称 | 技能描述 | URL |
@@ -108,12 +115,14 @@
 | --- | --- | --- |
 | Multi Search Engine | 集成17个搜索引擎（8个中文+9个全球）。支持高级搜索运算符、时间筛选、站内搜索 | [https://clawhub.ai/gpyAngyoujun/multi-search-engine](https://clawhub.ai/gpyAngyoujun/multi-search-engine) |
 | baidu web search | 使用百度AI搜索引擎搜索网页。用于获取实时信息、文档或研究主题（中文搜索） | [https://clawhub.ai/ide-rea/baidu-search](https://clawhub.ai/ide-rea/baidu-search) |
+
 2. 内容处理
 
 | 技能名称 | 技能描述 | URL |
 | --- | --- | --- |
 | Summarize | 使用summarize CLI摘要URL或文件（网页、PDF、图片、音频、YouTube）（安装量最高：154k） | [https://clawhub.ai/steipete/summarize](https://clawhub.ai/steipete/summarize) |
 | Pdf Extract | 从PDF文件中提取文本供LLM处理 | [https://clawhub.ai/Xejrax/pdf-extract](https://clawhub.ai/Xejrax/pdf-extract) |
+
 3. 深度研究
 
 | 技能名称 | 技能描述 | URL |
