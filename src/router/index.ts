@@ -38,6 +38,12 @@ const router = createRouter({
       meta: { title: '关于我们' }
     },
     {
+      path: '/security',
+      name: 'security',
+      component: () => import('@/views/SecurityView.vue'),
+      meta: { title: '安全中心' }
+    },
+    {
       path: '/ui-test',
       name: 'ui-test',
       component: () => import('@/views/UITestView.vue'),

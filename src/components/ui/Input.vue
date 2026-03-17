@@ -21,6 +21,7 @@
 interface Props {
   modelValue?: string
   type?: 'text' | 'password' | 'email' | 'number'
+  size?: 'sm' | 'md' | 'lg'
   label?: string
   placeholder?: string
   hint?: string
@@ -28,8 +29,9 @@ interface Props {
   disabled?: boolean
 }
 
-const props = withDefaults(defineProps<Props>(), {
+withDefaults(defineProps<Props>(), {
   type: 'text',
+  size: 'md',
   modelValue: ''
 })
 

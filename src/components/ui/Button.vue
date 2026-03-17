@@ -1,6 +1,6 @@
 <template>
   <button
-    :class="['btn', `btn-${kind}`, { 'is-disabled': disabled }]"
+    :class="['btn', `btn-${kind}`, `btn-${size}`, { 'is-disabled': disabled }]"
     :disabled="disabled"
     @click="$emit('click', $event)"
   >
@@ -11,11 +11,13 @@
 <script setup lang="ts">
 interface Props {
   kind?: 'fill' | 'quiet' | 'outline' | 'ghost' | 'primary'
+  size?: 'sm' | 'md' | 'lg'
   disabled?: boolean
 }
 
 withDefaults(defineProps<Props>(), {
-  kind: 'fill'
+  kind: 'fill',
+  size: 'md'
 })
 
 defineEmits<{
@@ -38,6 +40,19 @@ defineEmits<{
   cursor: pointer;
   transition: all var(--ease-quick);
   outline: none;
+}
+
+/* Size variants */
+.btn-sm {
+  height: 28px;
+  padding: 0 var(--gap-3);
+  font-size: var(--font-xs);
+}
+
+.btn-lg {
+  height: 44px;
+  padding: 0 var(--gap-5);
+  font-size: var(--font-base);
 }
 
 .btn:focus-visible {
