@@ -28,6 +28,8 @@ coverage
 
 .eslintcache
 
+public/data/outline/original
+
 # Cypress
 /cypress/videos/
 /cypress/screenshots/

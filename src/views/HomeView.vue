@@ -41,12 +41,22 @@
     <!-- 分类导航 -->
     <section class="section category-section">
       <h2 class="section-title">探索分类</h2>
-      <CategoryNav v-model="selectedCategory" />
+      <div class="category-nav">
+        <button
+          v-for="cat in categories"
+          :key="cat.key"
+          class="category-btn"
+          :class="{ active: selectedCategory === cat.key }"
+          @click="selectedCategory = cat.key"
+        >
+          {{ cat.name }}
+        </button>
+      </div>
       <div v-if="loading" class="loading">
         <Loader />
       </div>
       <div v-else class="majors-grid">
-        <MajorCard
+        <OutlineMajorCard
           v-for="major in filteredMajors"
           :key="major.id"
           :major="major"
@@ -80,10 +90,9 @@
           class="major-card-wrapper"
           @click="router.push(`/major/${major.id}`)"
         >
-          <img :src="major.cover" :alt="major.name" />
+          <img :src="major.coverImage" :alt="major.name" />
           <div class="card-info">
             <h4>{{ major.name }}</h4>
-            <p>{{ major.enrollment.toLocaleString() }} 人</p>
           </div>
         </div>
       </HorizontalScrollList>
@@ -143,7 +152,7 @@
             @click="router.push(`/major/${major.id}`)"
           >
             <template #lead>
-              <img :src="major.cover" class="list-img" />
+              <img :src="major.coverImage" class="list-img" />
             </template>
             <template #title>{{ major.name }}</template>
             <template #desc>{{ truncatedDesc(major.description) }}</template>
@@ -158,33 +167,43 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, watch } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import type { Major, MajorCategory } from '@/types'
-import { majorService } from '@/services/majorService'
+import type { OutlineMajor } from '@/types'
+import { outlineService } from '@/services/outlineService'
 import Button from '@/components/ui/Button.vue'
 import Icon from '@/components/ui/Icon.vue'
 import Loader from '@/components/ui/Loader.vue'
 import ListGroup from '@/components/ui/ListGroup.vue'
 import ListItem from '@/components/ui/ListItem.vue'
-import MajorCard from '@/components/major/MajorCard.vue'
-import CategoryNav from '@/components/major/CategoryNav.vue'
+import OutlineMajorCard from '@/components/major/OutlineMajorCard.vue'
 import HorizontalScrollList from '@/components/ui/HorizontalScrollList.vue'
 
 const router = useRouter()
 
 const loading = ref(false)
-const allMajors = ref<Major[]>([])
-const hotMajors = ref<Major[]>([])
-const newMajors = ref<Major[]>([])
-const selectedCategory = ref<MajorCategory | ''>('')
+const allMajors = ref<OutlineMajor[]>([])
+const hotMajors = ref<OutlineMajor[]>([])
+const newMajors = ref<OutlineMajor[]>([])
+const selectedCategory = ref<string>('')
 const featuresRef = ref<HTMLElement>()
 
 const stats = {
-  majors: 15,
+  majors: 7,
   students: '8.5w',
   materials: '200+'
 }
+
+const categories = [
+  { key: '', name: '全部' },
+  { key: 'finance', name: '金融' },
+  { key: 'business', name: '商业' },
+  { key: 'hr', name: '人力资源' },
+  { key: 'content', name: '内容创作' },
+  { key: 'research', name: '学术研究' },
+  { key: 'marketing', name: '市场营销' },
+  { key: 'sales', name: '销售' }
+]
 
 const filteredMajors = computed(() => {
   if (!selectedCategory.value) {
@@ -205,9 +224,9 @@ const loadData = async () => {
   loading.value = true
   try {
     const [all, hot, newest] = await Promise.all([
-      majorService.getAllMajors(),
-      majorService.getHotMajors(),
-      majorService.getNewMajors()
+      outlineService.getAllMajors(),
+      outlineService.getHotMajors(),
+      outlineService.getNewMajors()
     ])
     allMajors.value = all
     hotMajors.value = hot
@@ -216,10 +235,6 @@ const loadData = async () => {
     loading.value = false
   }
 }
-
-watch(selectedCategory, () => {
-  // 分类切换动画
-})
 
 onMounted(loadData)
 </script>
@@ -315,6 +330,35 @@ onMounted(loadData)
   padding: var(--gap-6);
 }
 
+.category-nav {
+  display: flex;
+  gap: var(--gap-2);
+  flex-wrap: wrap;
+  margin-bottom: var(--gap-4);
+}
+
+.category-btn {
+  padding: 8px 16px;
+  border: 1px solid var(--border-default);
+  border-radius: var(--corner-full);
+  background: var(--paper-card);
+  font-size: var(--font-sm);
+  color: var(--ink-secondary);
+  cursor: pointer;
+  transition: all 200ms ease;
+}
+
+.category-btn:hover {
+  border-color: var(--cinnabar-light);
+  color: var(--cinnabar);
+}
+
+.category-btn.active {
+  background: var(--cinnabar);
+  border-color: var(--cinnabar);
+  color: #fff;
+}
+
 .majors-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -348,11 +392,6 @@ onMounted(loadData)
   font-weight: 500;
   color: var(--ink-primary);
   margin-bottom: 4px;
-}
-
-.card-info p {
-  font-size: var(--font-xs);
-  color: var(--ink-tertiary);
 }
 
 .features-grid {

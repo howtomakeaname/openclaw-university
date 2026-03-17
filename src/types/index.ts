@@ -90,3 +90,32 @@ export interface CategoryInfo {
   color: string
   description: string
 }
+
+// ==================== Outline 相关类型 ====================
+
+/**
+ * Outline 专业数据（来自 outline/data.json）
+ */
+export interface OutlineMajor {
+  id: string
+  code: string
+  name: string
+  category: string
+  description: string
+  tags: string[]
+  coverImage: string
+  createdAt: string
+  updatedAt: string
+  outlineMarkdownPath: string
+  deletedMarkdownPath: string
+  statsMarkdownPath: string
+}
+
+/**
+ * Outline 完整专业详情
+ */
+export interface OutlineMajorDetail extends OutlineMajor {
+  outlineContent?: string
+  deletedContent?: string
+  statsContent?: string
+}

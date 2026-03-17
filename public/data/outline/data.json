@@ -1,0 +1,135 @@
+[
+  {
+    "id": "1",
+    "code": "hr-specialist",
+    "name": "人力资源专家",
+    "category": "hr",
+    "description": "掌握人力资源管理核心技能，包括招聘管理、HR系统、面试安排、员工沟通等，成为专业的HR人才。",
+    "tags": [
+      "HR",
+      "招聘",
+      "人事管理",
+      "协作"
+    ],
+    "coverImage": "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800&q=80",
+    "createdAt": "2024-01-01",
+    "updatedAt": "2024-12-31",
+    "outlineMarkdownPath": "人力资源专家_技能分类大纲_v1_outline.md",
+    "deletedMarkdownPath": "人力资源专家_技能分类大纲_v1_deleted.md",
+    "statsMarkdownPath": "人力资源专家_技能分类大纲_v1_stats.md"
+  },
+  {
+    "id": "2",
+    "code": "content-creator",
+    "name": "内容创作者",
+    "category": "content",
+    "description": "精通内容创作全流程，包括文案写作、图像创作、视频制作、社媒运营等技能，打造专业内容创作能力。",
+    "tags": [
+      "内容",
+      "创作",
+      "社媒",
+      "文案"
+    ],
+    "coverImage": "https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=800&q=80",
+    "createdAt": "2024-01-01",
+    "updatedAt": "2024-12-31",
+    "outlineMarkdownPath": "内容创作者_技能分类大纲_v1_outline.md",
+    "deletedMarkdownPath": "内容创作者_技能分类大纲_v1_deleted.md",
+    "statsMarkdownPath": "内容创作者_技能分类大纲_v1_stats.md"
+  },
+  {
+    "id": "3",
+    "code": "academic-researcher",
+    "name": "学术研究员",
+    "category": "research",
+    "description": "掌握系统的学术研究方法，包括文献检索、研究设计、数据分析、论文写作等核心技能。",
+    "tags": [
+      "研究",
+      "学术",
+      "论文",
+      "文献"
+    ],
+    "coverImage": "https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=800&q=80",
+    "createdAt": "2024-01-01",
+    "updatedAt": "2024-12-31",
+    "outlineMarkdownPath": "学术研究员_技能分类大纲_v1_outline.md",
+    "deletedMarkdownPath": "学术研究员_技能分类大纲_v1_deleted.md",
+    "statsMarkdownPath": "学术研究员_技能分类大纲_v1_stats.md"
+  },
+  {
+    "id": "4",
+    "code": "marketing-specialist",
+    "name": "市场营销专家",
+    "category": "marketing",
+    "description": "学习市场营销核心技能，包括营销策略、内容营销、SEO优化、广告投放、数据分析等，成为营销专家。",
+    "tags": [
+      "营销",
+      "市场",
+      "广告",
+      "SEO"
+    ],
+    "coverImage": "https://images.unsplash.com/photo-1533750349088-cd871a92f312?w=800&q=80",
+    "createdAt": "2024-01-01",
+    "updatedAt": "2024-12-31",
+    "outlineMarkdownPath": "市场营销专家_技能分类大纲_v1_outline.md",
+    "deletedMarkdownPath": "市场营销专家_技能分类大纲_v1_deleted.md",
+    "statsMarkdownPath": "市场营销专家_技能分类大纲_v1_stats.md"
+  },
+  {
+    "id": "5",
+    "code": "ecommerce-operator",
+    "name": "电商运营专家",
+    "category": "business",
+    "description": "系统学习电商运营全流程，包括平台管理、营销推广、数据分析、客户关系管理等技能，打造电商运营专家。",
+    "tags": [
+      "电商",
+      "运营",
+      "营销",
+      "数据分析"
+    ],
+    "coverImage": "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&q=80",
+    "createdAt": "2024-01-01",
+    "updatedAt": "2024-12-31",
+    "outlineMarkdownPath": "电商运营专家_技能分类大纲_v1_outline.md",
+    "deletedMarkdownPath": "电商运营专家_技能分类大纲_v1_deleted.md",
+    "statsMarkdownPath": "电商运营专家_技能分类大纲_v1_stats.md"
+  },
+  {
+    "id": "6",
+    "code": "financial-analyst",
+    "name": "金融投资分析师",
+    "category": "finance",
+    "description": "掌握金融投资分析核心技能，包括股票数据分析、技术分析、市场研究、财务分析等，成为专业的金融投资人才。",
+    "tags": [
+      "金融",
+      "股票",
+      "投资",
+      "数据分析"
+    ],
+    "coverImage": "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&q=80",
+    "createdAt": "2024-01-01",
+    "updatedAt": "2024-12-31",
+    "outlineMarkdownPath": "金融投资分析师_技能分类大纲_v1_outline.md",
+    "deletedMarkdownPath": "金融投资分析师_技能分类大纲_v1_deleted.md",
+    "statsMarkdownPath": "金融投资分析师_技能分类大纲_v1_stats.md"
+  },
+  {
+    "id": "7",
+    "code": "sales-crm-specialist",
+    "name": "销售CRM专家",
+    "category": "sales",
+    "description": "掌握销售与客户关系管理技能，包括CRM系统、销售流程、客户沟通、数据分析等，成为销售专家。",
+    "tags": [
+      "销售",
+      "CRM",
+      "客户",
+      "沟通"
+    ],
+    "coverImage": "https://images.unsplash.com/photo-1552581234-26160f608093?w=800&q=80",
+    "createdAt": "2024-01-01",
+    "updatedAt": "2024-12-31",
+    "outlineMarkdownPath": "销售CRM专家_技能分类大纲_v1_outline.md",
+    "deletedMarkdownPath": "销售CRM专家_技能分类大纲_v1_deleted.md",
+    "statsMarkdownPath": "销售CRM专家_技能分类大纲_v1_stats.md"
+  }
+]
