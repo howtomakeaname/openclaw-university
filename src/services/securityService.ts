@@ -1,6 +1,6 @@
 import type { SkillSecurity, SecurityStats } from '@/types/security'
 
-const SKILLS_DATA_URL = '/data/skills_raw.json'
+const SKILLS_DATA_URL = 'data/skills_raw.json'
 
 /**
  * 获取所有技能安全数据

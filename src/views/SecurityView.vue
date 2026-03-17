@@ -62,14 +62,23 @@
             <span class="list-title">技能列表</span>
             <span class="list-count">共 {{ filteredSkills.length }} 个</span>
           </div>
-          <div class="list-content">
-            <SkillSecurityCard
-              v-for="skill in filteredSkills"
-              :key="skill.name"
-              :data="skill"
-            />
-          </div>
-          <div v-if="filteredSkills.length === 0" class="empty-state">
+          
+          <!-- 虚拟滚动列表 -->
+          <VirtualList
+            v-if="filteredSkills.length > 0"
+            :items="virtualListItems"
+            :estimated-item-height="180"
+            :overscan="3"
+            class="virtual-list-wrapper"
+          >
+            <template #default="{ item }">
+              <div class="skill-item">
+                <SkillSecurityCard :data="item.data" />
+              </div>
+            </template>
+          </VirtualList>
+          
+          <div v-else class="empty-state">
             <Icon size="xl" color="var(--ink-muted)">
               <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
             </Icon>
@@ -95,8 +104,14 @@ import Icon from '@/components/ui/Icon.vue'
 import Button from '@/components/ui/Button.vue'
 import Input from '@/components/ui/Input.vue'
 import Loader from '@/components/ui/Loader.vue'
+import VirtualList from '@/components/ui/VirtualList.vue'
 import SecurityStatsPanel from '@/components/security/SecurityStatsPanel.vue'
 import SkillSecurityCard from '@/components/security/SkillSecurityCard.vue'
+
+interface VirtualListItem {
+  id: string
+  data: SkillSecurity
+}
 
 // 数据状态
 const skills = ref<SkillSecurity[]>([])
@@ -131,6 +146,13 @@ const filteredSkills = computed(() => {
   }
 
   return result
+})
+
+const virtualListItems = computed<VirtualListItem[]>(() => {
+  return filteredSkills.value.map((skill, index) => ({
+    id: `skill-${skill.name}-${index}`,
+    data: skill
+  }))
 })
 
 // 方法
@@ -272,10 +294,17 @@ onMounted(() => {
   color: var(--ink-tertiary);
 }
 
-.list-content {
-  display: flex;
-  flex-direction: column;
-  gap: var(--gap-3);
+/* 虚拟列表容器 */
+.virtual-list-wrapper {
+  height: 600px;
+  border: 1px solid var(--border-default);
+  border-radius: var(--corner-lg);
+  background: var(--paper-card);
+}
+
+.skill-item {
+  padding: var(--gap-3);
+  border-bottom: 1px solid var(--border-light);
 }
 
 /* 空状态 */
@@ -317,6 +346,10 @@ onMounted(() => {
     flex-direction: column;
     align-items: flex-start;
     gap: var(--gap-1);
+  }
+  
+  .virtual-list-wrapper {
+    height: 400px;
   }
 }
 </style>
