@@ -7,8 +7,6 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted, onUnmounted, nextTick } from 'vue'
 import { marked } from 'marked'
-import Button from '@/components/ui/Button.vue'
-import Icon from '@/components/ui/Icon.vue'
 import type { TocItem } from '@/composables/useMarkdownToc'
 
 interface Props {
@@ -60,7 +58,7 @@ const setupObserver = () => {
 
   observer = new IntersectionObserver((entries) => {
     const visibleEntries = entries.filter(entry => entry.isIntersecting)
-    if (visibleEntries.length > 0) {
+    if (visibleEntries.length > 0 && visibleEntries[0]?.target) {
       const id = visibleEntries[0].target.id
       emit('activeIdChange', id)
     }
