@@ -103,6 +103,7 @@ defineEmits<{
 /* Ghost - 幽灵 */
 .btn-ghost {
   color: var(--ink-primary);
+  background: transparent;
 }
 
 .btn-ghost:hover:not(:disabled) {

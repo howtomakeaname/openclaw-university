@@ -11,6 +11,7 @@ const getBasePath = (): string => {
 // 动态获取路径
 const getOutlineDataPath = (): string => `${getBasePath()}data/outline/data.json`
 const getOutlineBasePath = (): string => `${getBasePath()}data/outline`
+const getInstallBasePath = (): string => `${getBasePath()}data/install`
 
 /**
  * 模拟网络延迟
@@ -25,6 +26,32 @@ function simulateDelay(ms: number): Promise<void> {
 async function loadMarkdownFile(filename: string): Promise<string> {
   try {
     const response = await fetch(`${getOutlineBasePath()}/${filename}`)
+    if (!response.ok) return ''
+    return await response.text()
+  } catch {
+    return ''
+  }
+}
+
+/**
+ * 加载 install 目录下的 markdown 文件
+ */
+async function loadInstallMarkdownFile(majorName: string): Promise<string> {
+  try {
+    // 将专业名称映射到 install 文件名
+    const nameMap: Record<string, string> = {
+      '金融投资分析师': '金融投资分析师_技能培养大纲',
+      '内容创作者': '内容创作者_技能培养大纲',
+      '人力资源专家': '人力资源专家_技能培养大纲',
+      '市场营销专家': '市场营销专家_技能培养大纲',
+      '销售CRM专家': '销售CRM专家_技能培养大纲',
+      '学术研究员': '学术研究员_技能培养大纲'
+    }
+    
+    const filePrefix = nameMap[majorName] || `${majorName}_技能培养大纲`
+    const filename = `${filePrefix}.md`
+    
+    const response = await fetch(`${getInstallBasePath()}/${filename}`)
     if (!response.ok) return ''
     return await response.text()
   } catch {
@@ -83,18 +110,16 @@ export const outlineService = {
     const major = all.find(m => m.id === id)
     if (!major) return null
 
-    // 加载三个 markdown 文件
-    const [outlineContent, deletedContent, statsContent] = await Promise.all([
+    // 加载 outline markdown 文件和 install markdown 文件
+    const [outlineContent, installContent] = await Promise.all([
       loadMarkdownFile(major.outlineMarkdownPath),
-      loadMarkdownFile(major.deletedMarkdownPath),
-      loadMarkdownFile(major.statsMarkdownPath)
+      loadInstallMarkdownFile(major.name)
     ])
 
     return {
       ...major,
       outlineContent,
-      deletedContent,
-      statsContent
+      installContent
     }
   },
 

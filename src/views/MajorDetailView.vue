@@ -24,7 +24,10 @@
       <div class="content-main">
         <!-- 内容区域 -->
         <div class="content-header">
-          <h2 class="content-title">大纲</h2>
+          <Tabs
+            v-model="activeContentTab"
+            :tabs="contentTabs"
+          />
           <Button kind="ghost" size="sm" @click="copyMarkdown">
             <Icon size="sm" :color="copied ? '#4ade80' : 'var(--cinnabar)'">
               <path v-if="copied" d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
@@ -35,7 +38,7 @@
         </div>
         <div class="tab-content">
           <MarkdownRenderer
-            :content="major?.outlineContent || ''"
+            :content="currentContent"
             :items="items"
             @activeIdChange="setActiveId"
           />
@@ -65,17 +68,18 @@
         </div>
 
         <div class="sidebar-card actions-card">
-          <Button kind="primary" class="full-btn">
+          <Button kind="primary" class="full-btn" @click="openStartDialog">
             <Icon size="sm" color="#fff">
               <path d="M8 5v14l11-7z"/>
             </Icon>
             开始学习
           </Button>
-          <Button kind="outline" class="full-btn">
-            <Icon size="sm" color="var(--cinnabar)">
-              <path d="M17 3H7c-1.1 0-1.99.9-1.99 2L5 21l7-3 7 3V5c0-1.1-.9-2-2-2z"/>
+          <Button kind="outline" class="full-btn" @click="toggleFavorite">
+            <Icon size="sm" :color="isFavorited ? '#ef4444' : 'var(--cinnabar)'">
+              <path v-if="isFavorited" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+              <path v-else d="M17 3H7c-1.1 0-1.99.9-1.99 2L5 21l7-3 7 3V5c0-1.1-.9-2-2-2z"/>
             </Icon>
-            收藏专业
+            {{ isFavorited ? '已收藏' : '收藏专业' }}
           </Button>
         </div>
 
@@ -104,6 +108,29 @@
     <p>专业不存在</p>
     <Button kind="outline" @click="router.push('/majors')">返回列表</Button>
   </div>
+
+  <!-- 开始学习弹窗 -->
+  <Dialog v-model="showStartDialog" title="选择你的学习角色">
+    <div class="role-selection">
+      <p class="role-description">请选择你的身份开始学习：</p>
+      <div class="role-options">
+        <button class="role-card" @click="selectRole('agent')">
+          <Icon size="lg" color="var(--cinnabar)">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
+          </Icon>
+          <span class="role-name">我是 Agent</span>
+          <span class="role-desc">AI 智能体查看技能分类大纲</span>
+        </button>
+        <button class="role-card" @click="selectRole('human')">
+          <Icon size="lg" color="var(--cinnabar)">
+            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+          </Icon>
+          <span class="role-name">我是 Human</span>
+          <span class="role-desc">人类用户查看技能培养大纲</span>
+        </button>
+      </div>
+    </div>
+  </Dialog>
 </template>
 
 <script setup lang="ts">
@@ -115,6 +142,8 @@ import { useMarkdownToc } from '@/composables/useMarkdownToc'
 import Button from '@/components/ui/Button.vue'
 import Icon from '@/components/ui/Icon.vue'
 import Loader from '@/components/ui/Loader.vue'
+import Tabs from '@/components/ui/Tabs.vue'
+import Dialog from '@/components/ui/Dialog.vue'
 import MarkdownRenderer from '@/components/major/MarkdownRenderer.vue'
 import MarkdownToc from '@/components/major/MarkdownToc.vue'
 
@@ -124,15 +153,28 @@ const router = useRouter()
 const loading = ref(false)
 const major = ref<OutlineMajorDetail | null>(null)
 const copied = ref(false)
+const activeContentTab = ref<'agent' | 'human'>('agent')
+const showStartDialog = ref(false)
+const isFavorited = ref(false)
 
-const outlineContent = computed(() => major.value?.outlineContent || '')
+const contentTabs = [
+  { key: 'agent' as const, label: '我是Agent' },
+  { key: 'human' as const, label: '我是Human' }
+]
+
+const currentContent = computed(() => {
+  if (!major.value) return ''
+  return activeContentTab.value === 'agent' 
+    ? (major.value.installContent || '') 
+    : (major.value.outlineContent || '')
+})
 
 // 目录解析
-const { items, activeId, setActiveId, scrollToHeading } = useMarkdownToc(outlineContent as Ref<string>)
+const { items, activeId, setActiveId, scrollToHeading } = useMarkdownToc(currentContent as Ref<string>)
 
 const copyMarkdown = async () => {
   try {
-    await navigator.clipboard.writeText(outlineContent.value)
+    await navigator.clipboard.writeText(currentContent.value)
     copied.value = true
     setTimeout(() => {
       copied.value = false
@@ -140,6 +182,46 @@ const copyMarkdown = async () => {
   } catch (err) {
     console.error('Failed to copy:', err)
   }
+}
+
+// 开始学习弹窗
+const openStartDialog = () => {
+  showStartDialog.value = true
+}
+
+const selectRole = (role: 'agent' | 'human') => {
+  activeContentTab.value = role
+  showStartDialog.value = false
+  // 滚动到内容区域
+  setTimeout(() => {
+    const contentElement = document.querySelector('.content-main')
+    contentElement?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }, 100)
+}
+
+// 收藏功能
+const FAVORITES_KEY = 'claw_favorite_majors'
+
+const loadFavoriteStatus = () => {
+  if (!major.value) return
+  const favorites = JSON.parse(localStorage.getItem(FAVORITES_KEY) || '[]')
+  isFavorited.value = favorites.includes(major.value.id)
+}
+
+const toggleFavorite = () => {
+  if (!major.value) return
+  const favorites = JSON.parse(localStorage.getItem(FAVORITES_KEY) || '[]')
+  const index = favorites.indexOf(major.value.id)
+  
+  if (index === -1) {
+    favorites.push(major.value.id)
+    isFavorited.value = true
+  } else {
+    favorites.splice(index, 1)
+    isFavorited.value = false
+  }
+  
+  localStorage.setItem(FAVORITES_KEY, JSON.stringify(favorites))
 }
 
 const CATEGORY_NAMES: Record<string, string> = {
@@ -166,6 +248,7 @@ const loadMajor = async () => {
   loading.value = true
   try {
     major.value = await outlineService.getMajorById(id)
+    loadFavoriteStatus()
   } finally {
     loading.value = false
   }
@@ -351,20 +434,53 @@ onMounted(loadMajor)
   width: 100%;
 }
 
-.detail-loading,
-.detail-error {
+/* 角色选择弹窗 */
+.role-selection {
+  padding: var(--gap-4);
+}
+
+.role-description {
+  text-align: center;
+  color: var(--ink-tertiary);
+  font-size: var(--font-base);
+  margin-bottom: var(--gap-4);
+}
+
+.role-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--gap-4);
+}
+
+.role-card {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: var(--gap-8);
-  gap: var(--gap-3);
+  gap: var(--gap-2);
+  padding: var(--gap-5);
+  background: var(--paper-card);
+  border: 2px solid var(--border-default);
+  border-radius: var(--corner-lg);
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-.detail-loading p,
-.detail-error p {
-  font-size: var(--font-base);
+.role-card:hover {
+  border-color: var(--cinnabar);
+  background: var(--paper-hover);
+  transform: translateY(-2px);
+}
+
+.role-name {
+  font-size: var(--font-lg);
+  font-weight: 600;
+  color: var(--ink-primary);
+}
+
+.role-desc {
+  font-size: var(--font-sm);
   color: var(--ink-tertiary);
+  text-align: center;
 }
 
 @media (max-width: 768px) {
@@ -387,5 +503,25 @@ onMounted(loadMajor)
   .toc-card {
     position: static;
   }
+
+  .role-options {
+    grid-template-columns: 1fr;
+  }
+}
+
+.detail-loading,
+.detail-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--gap-8);
+  gap: var(--gap-3);
+}
+
+.detail-loading p,
+.detail-error p {
+  font-size: var(--font-base);
+  color: var(--ink-tertiary);
 }
 </style>

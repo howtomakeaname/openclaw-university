@@ -118,4 +118,5 @@ export interface OutlineMajorDetail extends OutlineMajor {
   outlineContent?: string
   deletedContent?: string
   statsContent?: string
+  installContent?: string
 }
