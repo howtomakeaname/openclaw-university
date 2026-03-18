@@ -1,5 +1,21 @@
 <template>
   <div v-if="major" class="major-detail">
+    <!-- 注入到AppHeader的开始学习按钮 -->
+    <Teleport to="#header-actions-target">
+      <transition name="slide-in-right">
+        <Button
+          v-if="showHeaderAction"
+          kind="primary"
+          class="header-study-btn"
+          @click="openStartDialog"
+        >
+          <Icon size="sm" color="#fff">
+            <path d="M8 5v14l11-7z"/>
+          </Icon>
+          开始学习
+        </Button>
+      </transition>
+    </Teleport>
     <!-- 封面区域 -->
     <section class="detail-hero">
       <div class="hero-cover">
@@ -134,7 +150,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, type Ref } from 'vue'
+import { ref, computed, onMounted, onUnmounted, type Ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import type { OutlineMajorDetail } from '@/types'
 import { outlineService } from '@/services/outlineService'
@@ -156,6 +172,7 @@ const copied = ref(false)
 const activeContentTab = ref<'agent' | 'human'>('agent')
 const showStartDialog = ref(false)
 const isFavorited = ref(false)
+const showHeaderAction = ref(false)
 
 const contentTabs = [
   { key: 'agent' as const, label: '我是Agent' },
@@ -254,7 +271,21 @@ const loadMajor = async () => {
   }
 }
 
-onMounted(loadMajor)
+// 滚动监听
+const handleScroll = () => {
+  // 滚动超过hero高度时显示header按钮
+  const heroHeight = document.querySelector('.detail-hero')?.clientHeight || 380
+  showHeaderAction.value = window.scrollY > heroHeight - 76
+}
+
+onMounted(() => {
+  loadMajor()
+  window.addEventListener('scroll', handleScroll)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('scroll', handleScroll)
+})
 </script>
 
 <style scoped>
@@ -524,7 +555,7 @@ onMounted(loadMajor)
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: var(--gap-8);
+  min-height: calc(100vh - 76px - var(--gap-6));
   gap: var(--gap-3);
 }
 
@@ -532,5 +563,21 @@ onMounted(loadMajor)
 .detail-error p {
   font-size: var(--font-base);
   color: var(--ink-tertiary);
+}
+
+/* 按钮从右侧平滑滑入滑出动效 */
+.slide-in-right-enter-active,
+.slide-in-right-leave-active {
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.slide-in-right-enter-from {
+  transform: translateX(24px);
+  opacity: 0;
+}
+
+.slide-in-right-leave-to {
+  transform: translateX(24px);
+  opacity: 0;
 }
 </style>

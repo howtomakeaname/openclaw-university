@@ -1,6 +1,12 @@
 <template>
   <div class="app">
-    <AppHeader />
+    <AppHeader ref="appHeaderRef">
+      <template #actions>
+        <!-- 按钮注入目标放在插槽内部，确保在搜索按钮后面 -->
+        <div id="header-actions-target"></div>
+      </template>
+    </AppHeader>
+
     <main class="main-content">
       <router-view v-slot="{ Component }">
         <transition name="page">
