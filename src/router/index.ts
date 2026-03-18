@@ -48,6 +48,12 @@ const router = createRouter({
       name: 'ui-test',
       component: () => import('@/views/UITestView.vue'),
       meta: { title: 'UI 组件测试' }
+    },
+    {
+      path: '/upload',
+      name: 'upload',
+      component: () => import('@/views/UploadView.vue'),
+      meta: { title: '上传技能大纲' }
     }
   ],
   scrollBehavior(to, from, savedPosition) {

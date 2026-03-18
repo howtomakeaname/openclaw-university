@@ -58,6 +58,7 @@ const router = useRouter()
 const navItems = [
   { path: '/', label: '首页' },
   { path: '/majors', label: '专业' },
+  { path: '/upload', label: '上传' },
   { path: '/explore', label: '探索' },
   { path: '/security', label: '安全' },
   { path: '/about', label: '关于' }

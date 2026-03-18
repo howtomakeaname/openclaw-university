@@ -348,6 +348,9 @@ onMounted(loadMajor)
   display: grid;
   grid-template-columns: 1fr 320px;
   gap: var(--gap-5);
+  /* 添加背景色填充 AppHeader 和 content-header 之间的间距 */
+  background-color: var(--paper-bg);
+  border-radius: var(--corner-lg);
 }
 
 .content-main {
@@ -362,11 +365,22 @@ onMounted(loadMajor)
   align-items: center;
   padding: var(--gap-4);
   border-bottom: 1px solid var(--border-light);
-  background: var(--paper-hover);
+  background-color: #f5f0e8;
   border-radius: var(--corner-lg) var(--corner-lg) 0 0;
   position: sticky;
   top: 76px;
-  z-index: 10;
+  z-index: 100;
+  isolation: isolate;
+}
+
+/* 吸顶时添加背景层防止透传 */
+.content-header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: #f5f0e8;
+  border-radius: var(--corner-lg) var(--corner-lg) 0 0;
+  z-index: -1;
 }
 
 .content-title {

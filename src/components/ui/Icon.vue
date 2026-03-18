@@ -13,7 +13,7 @@
 
 <script setup lang="ts">
 interface Props {
-  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+  size?: 'xs' | 'sm' | 'base' | 'md' | 'lg' | 'xl' | '2xl'
   color?: string
 }
 
@@ -24,9 +24,11 @@ withDefaults(defineProps<Props>(), {
 const sizeMap = {
   xs: 12,
   sm: 16,
+  base: 18,
   md: 20,
   lg: 24,
-  xl: 32
+  xl: 32,
+  '2xl': 48
 }
 </script>
 
