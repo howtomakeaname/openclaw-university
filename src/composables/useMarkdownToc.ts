@@ -1,4 +1,4 @@
-import { ref, watch, type Ref } from 'vue'
+import { ref, watch, onScopeDispose, type Ref } from 'vue'
 
 export interface TocItem {
   id: string
@@ -13,25 +13,32 @@ export interface TocItem {
 export function useMarkdownToc(contentRef: Ref<string>) {
   const items = ref<TocItem[]>([])
   const activeId = ref<string>('')
+  let stopWatch: (() => void) | null = null
 
   const parseToc = (markdown: string) => {
-    const result: TocItem[] = []
-    const headingRegex = /^(#{1,6})\s+(.+)$/gm
-    let match
+    // 使用 try-catch 防止正则表达式错误
+    try {
+      const result: TocItem[] = []
+      const headingRegex = /^(#{1,6})\s+(.+)$/gm
+      let match
 
-    while ((match = headingRegex.exec(markdown)) !== null) {
-      const levelStr = match[1]
-      const textStr = match[2]
-      if (!levelStr || !textStr) continue
+      while ((match = headingRegex.exec(markdown)) !== null) {
+        const levelStr = match[1]
+        const textStr = match[2]
+        if (!levelStr || !textStr) continue
 
-      const level = levelStr.length
-      const text = textStr.trim()
-      const anchor = text.toLowerCase().replace(/[^\w\u4e00-\u9fa5]+/g, '-')
-      const id = `heading-${anchor}-${result.length}`
-      result.push({ id, level, text, anchor })
+        const level = levelStr.length
+        const text = textStr.trim()
+        const anchor = text.toLowerCase().replace(/[^\w\u4e00-\u9fa5]+/g, '-')
+        const id = `heading-${anchor}-${result.length}`
+        result.push({ id, level, text, anchor })
+      }
+
+      items.value = result
+    } catch (e) {
+      console.error('Failed to parse TOC:', e)
+      items.value = []
     }
-
-    items.value = result
   }
 
   const setActiveId = (id: string) => {
@@ -39,16 +46,34 @@ export function useMarkdownToc(contentRef: Ref<string>) {
   }
 
   const scrollToHeading = (item: TocItem) => {
-    const element = document.getElementById(item.id)
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' })
-      activeId.value = item.id
-    }
+    // 使用 setTimeout 避免在过渡动画期间操作 DOM
+    setTimeout(() => {
+      const element = document.getElementById(item.id)
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' })
+        activeId.value = item.id
+      }
+    }, 0)
   }
 
-  watch(contentRef, (newContent) => {
-    parseToc(newContent)
-  }, { immediate: true })
+  // 初始化 watch
+  stopWatch = watch(
+    contentRef,
+    (newContent) => {
+      parseToc(newContent)
+    },
+    { immediate: true }
+  )
+
+  // 组件卸载时清理
+  onScopeDispose(() => {
+    if (stopWatch) {
+      stopWatch()
+      stopWatch = null
+    }
+    items.value = []
+    activeId.value = ''
+  })
 
   return {
     items,

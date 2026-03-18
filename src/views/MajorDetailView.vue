@@ -354,7 +354,6 @@ onMounted(loadMajor)
   background: var(--paper-card);
   border: 1px solid var(--border-default);
   border-radius: var(--corner-lg);
-  overflow: hidden;
 }
 
 .content-header {
@@ -364,6 +363,10 @@ onMounted(loadMajor)
   padding: var(--gap-4);
   border-bottom: 1px solid var(--border-light);
   background: var(--paper-hover);
+  border-radius: var(--corner-lg) var(--corner-lg) 0 0;
+  position: sticky;
+  top: 76px;
+  z-index: 10;
 }
 
 .content-title {

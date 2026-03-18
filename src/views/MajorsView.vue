@@ -2,7 +2,9 @@
   <div class="majors-view">
     <header class="page-header">
       <h1 class="page-title">全部专业</h1>
+      <!--
       <p class="page-desc">探索 {{ allMajors.length }} 个专业方向，开启你的职业成长之旅</p>
+      -->
       <div class="search-bar">
         <Search
           v-model="searchQuery"

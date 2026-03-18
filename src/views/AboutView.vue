@@ -81,6 +81,7 @@
       </section>
 
       <!-- 开发测试入口 -->
+      <!--
       <section class="about-section dev-section">
         <h2>开发者工具</h2>
         <div class="dev-tools">
@@ -95,6 +96,7 @@
           </router-link>
         </div>
       </section>
+      -->
     </div>
   </div>
 </template>
@@ -106,30 +108,30 @@ import type { TimelineItem } from '@/components/ui/Timeline.vue'
 
 const timelineItems: TimelineItem[] = [
   {
-    time: '2024 Q1',
+    time: '2025 Q1',
     title: '项目启动',
     description: 'Openclaw 技能大学正式立项，开始构建技能学习平台的基础架构',
     type: 'success'
   },
   {
-    time: '2024 Q2',
+    time: '2025 Q2',
     title: 'Beta 版本发布',
     description: '首个可测试版本上线，包含系统操作、浏览器自动化等核心专业',
     type: 'primary',
     active: true
   },
   {
-    time: '2024 Q3',
+    time: '2025 Q3',
     title: '技能生态扩展',
     description: '接入更多官方 Skills 仓库，支持编程辅助、API 调用等专业领域'
   },
   {
-    time: '2024 Q4',
+    time: '2025 Q4',
     title: '社区建设',
     description: '开放 Skill 开发指南，鼓励开发者贡献自定义技能插件'
   },
   {
-    time: '2025',
+    time: '2026',
     title: '未来展望',
     description: '持续完善学习路径，打造最全面的 AI 自动化代理技能培养体系'
   }

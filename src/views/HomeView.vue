@@ -22,6 +22,7 @@
           </Button>
         </div>
       </div>
+      <!--
       <div class="hero-stats">
         <div class="stat-item">
           <span class="stat-number">{{ stats.majors }}</span>
@@ -36,6 +37,7 @@
           <span class="stat-label">学习资源</span>
         </div>
       </div>
+      -->
     </section>
 
     <!-- 分类导航 -->

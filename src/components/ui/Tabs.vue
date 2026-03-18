@@ -2,9 +2,9 @@
   <div class="ios-segmented-control" ref="containerRef">
     <div class="segments-container">
       <div
-        v-for="(tab, index) in tabs"
+        v-for="tab in tabs"
         :key="tab.key"
-        :ref="(el) => { if (el) segmentRefs[index] = el as HTMLElement }"
+        ref="segmentRefs"
         :class="['segment', { active: modelValue === tab.key }]"
         @click="handleSelect(tab.key)"
       >
@@ -17,7 +17,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch, nextTick, onMounted } from 'vue'
+import { computed, ref, watch, nextTick, onMounted, onBeforeUnmount } from 'vue'
 
 export interface TabItem {
   key: string
@@ -56,9 +56,9 @@ const updateIndicator = async () => {
   }
 
   const segment = segmentRefs.value[index]
-  const container = containerRef.value?.querySelector('.segments-container') as HTMLElement
+  const container = containerRef.value?.querySelector('.segments-container') as HTMLElement | undefined
   
-  if (!container) return
+  if (!container || !segment) return
 
   const segmentRect = segment.getBoundingClientRect()
   const containerRect = container.getBoundingClientRect()
@@ -87,12 +87,20 @@ const handleSelect = (key: string) => {
 watch(() => props.modelValue, updateIndicator, { immediate: true })
 
 // 监听 tabs 变化
-watch(() => props.tabs, updateIndicator, { deep: true })
+watch(() => props.tabs.length, updateIndicator)
 
 // 窗口大小变化时更新
+const handleResize = () => {
+  updateIndicator()
+}
+
 onMounted(() => {
   updateIndicator()
-  window.addEventListener('resize', updateIndicator)
+  window.addEventListener('resize', handleResize)
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('resize', handleResize)
 })
 </script>
 

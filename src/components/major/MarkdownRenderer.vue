@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, onMounted, onUnmounted, nextTick } from 'vue'
+import { ref, computed, watch, onMounted, onBeforeUnmount, nextTick } from 'vue'
 import { marked } from 'marked'
 import type { TocItem } from '@/composables/useMarkdownToc'
 
@@ -23,20 +23,24 @@ const emit = defineEmits<{
 }>()
 
 const bodyRef = ref<HTMLElement>()
-let observer: IntersectionObserver | null = null
+const observer = ref<IntersectionObserver | null>(null)
 
 const renderedContent = computed(() => {
   if (!props.content) return ''
   return marked.parse(props.content) as string
 })
 
-const setupObserver = () => {
-  if (!bodyRef.value) return
-
-  // 清除旧的 observer
-  if (observer) {
-    observer.disconnect()
+const cleanupObserver = () => {
+  if (observer.value) {
+    observer.value.disconnect()
+    observer.value = null
   }
+}
+
+const setupObserver = () => {
+  cleanupObserver()
+
+  if (!bodyRef.value) return
 
   // 添加 id 到标题
   const headings = bodyRef.value.querySelectorAll('h1, h2, h3, h4, h5, h6')
@@ -50,22 +54,28 @@ const setupObserver = () => {
     }
   })
 
+  if (headings.length === 0) return
+
   const options: IntersectionObserverInit = {
     root: null,
     rootMargin: '-20% 0px -70% 0px',
     threshold: 0
   }
 
-  observer = new IntersectionObserver((entries) => {
+  observer.value = new IntersectionObserver((entries) => {
     const visibleEntries = entries.filter(entry => entry.isIntersecting)
     if (visibleEntries.length > 0 && visibleEntries[0]?.target) {
       const id = visibleEntries[0].target.id
-      emit('activeIdChange', id)
+      if (id) {
+        emit('activeIdChange', id)
+      }
     }
   }, options)
 
   // 观察所有标题
-  headings.forEach(heading => observer!.observe(heading))
+  headings.forEach(heading => {
+    observer.value?.observe(heading)
+  })
 }
 
 onMounted(() => {
@@ -80,10 +90,14 @@ watch(() => props.content, () => {
   })
 })
 
-onUnmounted(() => {
-  if (observer) {
-    observer.disconnect()
-  }
+watch(() => props.items, () => {
+  nextTick(() => {
+    setupObserver()
+  })
+}, { deep: true })
+
+onBeforeUnmount(() => {
+  cleanupObserver()
 })
 </script>
 
