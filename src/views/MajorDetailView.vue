@@ -260,6 +260,8 @@ onMounted(loadMajor)
 <style scoped>
 .major-detail {
   padding-bottom: var(--gap-6);
+  /* 整个页面使用背景色，填充 AppHeader 下方的间隙 */
+  background-color: var(--paper-bg);
 }
 
 .detail-hero {
@@ -367,20 +369,10 @@ onMounted(loadMajor)
   border-bottom: 1px solid var(--border-light);
   background-color: #f5f0e8;
   border-radius: var(--corner-lg) var(--corner-lg) 0 0;
-  position: sticky;
-  top: 76px;
-  z-index: 100;
-  isolation: isolate;
 }
 
-/* 吸顶时添加背景层防止透传 */
-.content-header::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-color: #f5f0e8;
-  border-radius: var(--corner-lg) var(--corner-lg) 0 0;
-  z-index: -1;
+.tab-content {
+  padding: var(--gap-4);
 }
 
 .content-title {

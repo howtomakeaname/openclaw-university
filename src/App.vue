@@ -26,6 +26,7 @@ import AppFooter from './components/layout/AppFooter.vue'
 
 .main-content {
   flex: 1;
+  background-color: var(--paper-bg);
 }
 
 /* 页面过渡动画 */
