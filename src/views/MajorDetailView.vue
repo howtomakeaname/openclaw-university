@@ -22,37 +22,20 @@
     <!-- 主要内容 -->
     <div class="detail-content">
       <div class="content-main">
-        <!-- 标签页导航 -->
-        <div class="tabs-nav">
-          <div class="tabs-left">
-            <button
-              v-for="tab in tabs"
-              :key="tab.key"
-              class="tab-btn"
-              :class="{ active: activeTab === tab.key }"
-              @click="activeTab = tab.key"
-            >
-              <Icon size="sm" :color="activeTab === tab.key ? 'var(--cinnabar)' : 'var(--ink-secondary)'">
-                <path :d="tab.icon" />
-              </Icon>
-              {{ tab.label }}
-            </button>
-          </div>
-          <div class="tabs-right">
-            <Button kind="ghost" size="sm" @click="copyMarkdown">
-              <Icon size="sm" :color="copied ? '#4ade80' : 'var(--cinnabar)'">
-                <path v-if="copied" d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
-                <path v-else d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
-              </Icon>
-              {{ copied ? '已复制' : '复制' }}
-            </Button>
-          </div>
+        <!-- 内容区域 -->
+        <div class="content-header">
+          <h2 class="content-title">大纲</h2>
+          <Button kind="ghost" size="sm" @click="copyMarkdown">
+            <Icon size="sm" :color="copied ? '#4ade80' : 'var(--cinnabar)'">
+              <path v-if="copied" d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+              <path v-else d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+            </Icon>
+            {{ copied ? '已复制' : '复制' }}
+          </Button>
         </div>
-
-        <!-- 标签页内容 -->
         <div class="tab-content">
           <MarkdownRenderer
-            :content="currentContent"
+            :content="major?.outlineContent || ''"
             :items="items"
             @activeIdChange="setActiveId"
           />
@@ -140,30 +123,16 @@ const router = useRouter()
 
 const loading = ref(false)
 const major = ref<OutlineMajorDetail | null>(null)
-const activeTab = ref<'outline' | 'deleted' | 'stats'>('outline')
 const copied = ref(false)
 
-// 当前激活的 markdown 内容
-const currentContent = computed(() => {
-  if (!major.value) return ''
-  switch (activeTab.value) {
-    case 'outline':
-      return major.value.outlineContent || ''
-    case 'deleted':
-      return major.value.deletedContent || ''
-    case 'stats':
-      return major.value.statsContent || ''
-    default:
-      return ''
-  }
-})
+const outlineContent = computed(() => major.value?.outlineContent || '')
 
 // 目录解析
-const { items, activeId, setActiveId, scrollToHeading } = useMarkdownToc(currentContent as Ref<string>)
+const { items, activeId, setActiveId, scrollToHeading } = useMarkdownToc(outlineContent as Ref<string>)
 
 const copyMarkdown = async () => {
   try {
-    await navigator.clipboard.writeText(currentContent.value)
+    await navigator.clipboard.writeText(outlineContent.value)
     copied.value = true
     setTimeout(() => {
       copied.value = false
@@ -184,24 +153,6 @@ const CATEGORY_NAMES: Record<string, string> = {
 }
 
 const categoryLabel = computed(() => major.value ? CATEGORY_NAMES[major.value.category] || major.value.category : '')
-
-const tabs = [
-  {
-    key: 'outline' as const,
-    label: '技能分类大纲',
-    icon: 'M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z'
-  },
-  {
-    key: 'deleted' as const,
-    label: '已删除技能',
-    icon: 'M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z'
-  },
-  {
-    key: 'stats' as const,
-    label: '统计',
-    icon: 'M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z'
-  }
-]
 
 const formatDate = (dateStr: string) => {
   const date = new Date(dateStr)
@@ -323,42 +274,20 @@ onMounted(loadMajor)
   overflow: hidden;
 }
 
-.tabs-nav {
+.content-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: var(--gap-4);
   border-bottom: 1px solid var(--border-light);
-  padding: 0 var(--gap-4);
   background: var(--paper-hover);
 }
 
-.tabs-left {
-  display: flex;
-}
-
-.tab-btn {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: var(--gap-3) var(--gap-3);
-  border: none;
-  background: none;
-  font-size: var(--font-sm);
-  font-weight: 500;
-  color: var(--ink-secondary);
-  cursor: pointer;
-  border-bottom: 2px solid transparent;
-  transition: all 200ms ease;
-  margin-bottom: -1px;
-}
-
-.tab-btn:hover {
-  color: var(--cinnabar);
-}
-
-.tab-btn.active {
-  color: var(--cinnabar);
-  border-bottom-color: var(--cinnabar);
+.content-title {
+  font-size: var(--font-lg);
+  font-weight: 600;
+  color: var(--ink-primary);
+  margin: 0;
 }
 
 .tab-content {
@@ -457,10 +386,6 @@ onMounted(loadMajor)
 
   .toc-card {
     position: static;
-  }
-
-  .tabs-nav {
-    overflow-x: auto;
   }
 }
 </style>

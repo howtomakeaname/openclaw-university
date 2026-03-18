@@ -4,17 +4,10 @@
       <h1 class="page-title">全部专业</h1>
       <p class="page-desc">探索 {{ allMajors.length }} 个专业方向，开启你的职业成长之旅</p>
       <div class="search-bar">
-        <Input
+        <Search
           v-model="searchQuery"
           placeholder="搜索专业、技能或关键词..."
-          class="search-input"
-        >
-          <template #prefix>
-            <Icon size="md" color="var(--ink-tertiary)">
-              <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
-            </Icon>
-          </template>
-        </Input>
+        />
       </div>
       <div class="category-nav">
         <button
@@ -59,7 +52,7 @@
 import { ref, computed, onMounted } from 'vue'
 import type { OutlineMajor } from '@/types'
 import { outlineService } from '@/services/outlineService'
-import Input from '@/components/ui/Input.vue'
+import Search from '@/components/ui/Search.vue'
 import Button from '@/components/ui/Button.vue'
 import Icon from '@/components/ui/Icon.vue'
 import Loader from '@/components/ui/Loader.vue'
