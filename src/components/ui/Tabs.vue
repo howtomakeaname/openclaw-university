@@ -1,11 +1,11 @@
 <template>
-  <div class="ios-segmented-control">
+  <div class="ios-segmented-control" ref="containerRef">
     <div class="segments-container">
       <div
         v-for="(tab, index) in tabs"
         :key="tab.key"
+        :ref="(el) => { if (el) segmentRefs[index] = el as HTMLElement }"
         :class="['segment', { active: modelValue === tab.key }]"
-        :style="getSegmentStyle()"
         @click="handleSelect(tab.key)"
       >
         <span class="segment-label">{{ tab.label }}</span>
@@ -17,7 +17,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref, watch, nextTick, onMounted } from 'vue'
 
 export interface TabItem {
   key: string
@@ -36,38 +36,64 @@ const emit = defineEmits<{
   change: [key: string]
 }>()
 
+const containerRef = ref<HTMLElement | null>(null)
+const segmentRefs = ref<HTMLElement[]>([])
+
 // 当前选中索引
 const activeIndex = computed(() => {
   return props.tabs.findIndex(tab => tab.key === props.modelValue)
 })
 
-// 指示器位置样式
-const indicatorStyle = computed(() => {
-  const index = activeIndex.value
-  const total = props.tabs.length
-  if (index === -1 || total === 0) return {}
-  
-  const percentage = (index / total) * 100
-  const width = (1 / total) * 100
-  
-  return {
-    transform: `translateX(${percentage}%)`,
-    width: `${width}%`
-  }
-})
+// 指示器位置和宽度
+const indicatorPos = ref({ left: 0, width: 0 })
 
-// 每个 segment 的样式
-const getSegmentStyle = () => {
-  const total = props.tabs.length
-  return {
-    width: `${100 / total}%`
+const updateIndicator = async () => {
+  await nextTick()
+  const index = activeIndex.value
+  if (index === -1 || !segmentRefs.value[index]) {
+    indicatorPos.value = { left: 0, width: 0 }
+    return
+  }
+
+  const segment = segmentRefs.value[index]
+  const container = containerRef.value?.querySelector('.segments-container') as HTMLElement
+  
+  if (!container) return
+
+  const segmentRect = segment.getBoundingClientRect()
+  const containerRect = container.getBoundingClientRect()
+
+  // 计算相对于 container 的位置
+  indicatorPos.value = {
+    left: segmentRect.left - containerRect.left,
+    width: segmentRect.width
   }
 }
+
+// 指示器样式
+const indicatorStyle = computed(() => {
+  return {
+    transform: `translateX(${indicatorPos.value.left}px)`,
+    width: `${indicatorPos.value.width}px`
+  }
+})
 
 const handleSelect = (key: string) => {
   emit('update:modelValue', key)
   emit('change', key)
 }
+
+// 监听选中变化
+watch(() => props.modelValue, updateIndicator, { immediate: true })
+
+// 监听 tabs 变化
+watch(() => props.tabs, updateIndicator, { deep: true })
+
+// 窗口大小变化时更新
+onMounted(() => {
+  updateIndicator()
+  window.addEventListener('resize', updateIndicator)
+})
 </script>
 
 <style scoped>
@@ -110,6 +136,7 @@ const handleSelect = (key: string) => {
   z-index: 2;
   user-select: none;
   white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .segment:hover {
@@ -137,8 +164,9 @@ const handleSelect = (key: string) => {
   box-shadow: 
     0 3px 8px rgba(0, 0, 0, 0.08),
     0 1px 2px rgba(0, 0, 0, 0.04);
-  transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1);
+  transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1), width 0.35s cubic-bezier(0.32, 0.72, 0, 1);
   z-index: 1;
+  pointer-events: none;
 }
 
 /* 响应式调整 */
