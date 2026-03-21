@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages
+name: Deploy
 
 on:
   # 每当推送到 main 分支时自动触发
@@ -69,7 +69,7 @@ jobs:
           path: ./dist
 
   # 部署任务
-  deploy:
+  deploy-pages:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -79,3 +79,38 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+  # FTP 部署任务
+  deploy-ftp:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: github-pages
+          path: ./dist
+
+      - name: Deploy to FTP server
+        env:
+          FTP_SERV: ${{ secrets.FTP_SERV }}
+          FTP_USER: ${{ secrets.FTP_SERV_USR }}
+          FTP_PASS: ${{ secrets.FTP_SERV_PWD }}
+        run: |
+          # Parse ftp://host:port format
+          FTP_URL="$FTP_SERV"
+          FTP_URL="${FTP_URL#ftp://}"
+          FTP_HOST="${FTP_URL%:*}"
+          FTP_PORT="${FTP_URL##*:}"
+          
+          echo "Installing lftp..."
+          sudo apt-get update -qq && sudo apt-get install -y -qq lftp > /dev/null 2>&1
+          
+          echo "Uploading files via FTP..."
+          lftp -u "$FTP_USER,$FTP_PASS" -p "$FTP_PORT" "$FTP_HOST" <<'EOF'
+          set ssl:verify-certificate no
+          set ftp:ssl-allow no
+          mirror -R ./dist/ /
+          bye
+          EOF
+          echo "FTP upload completed!"
